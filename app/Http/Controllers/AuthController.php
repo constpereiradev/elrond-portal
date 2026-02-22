@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AuthController extends Controller
 {
-    /**
-     * Docs: https://laravel.com/docs/12.x/sanctum
-     */
+    public function __construct(
+        private readonly AuthService $authService
+    ) {}
+
     public function authenticate(Request $request): JsonResponse
     {
         $credentials = $request->validate([
@@ -21,15 +22,18 @@ class AuthController extends Controller
 
         try {
 
-            if (!Auth::attempt($credentials)) {
+            if (!$this->authService->authenticate($credentials)) {
                 return $this->error([], 'The provided credentials do not match our records.');
             }
 
-            $token = Auth::user()->createToken('auth_token')->plainTextToken;
+            $token = $this->authService->generateAuthToken();
+
+            //TODO: Validar se o reino está ativo, se não tiver retorna erro.
 
             return $this->success([
                 'access_token' => $token,
-                'token_type' => 'Bearer'
+                'token_type' => 'Bearer',
+                'type' => Auth::user()->type(),
             ]);
         } catch (\Exception $e) {
             return $this->error([], $e->getMessage());;
@@ -40,14 +44,12 @@ class AuthController extends Controller
     {
         if ($request->user()) {
             try {
-                $token = $request->user()->currentAccessToken();
-                
-                if ($token instanceof PersonalAccessToken) {
-                    $token->delete();
-                    return $this->success();
+
+                if ($this->authService->logout($request->user())) {
+                    return $this->success([]);
                 }
 
-                return $this->error([], 'Invalid token');
+                return $this->error([]);
             } catch (\Exception $e) {
                 return $this->error([], $e->getMessage());;
             }

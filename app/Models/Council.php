@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 #[UsePolicy(CouncilPolicy::class)]
 class Council extends Model
-{
-    protected $table = "councils";
+{   
 
     protected $fillable = [
         'name',

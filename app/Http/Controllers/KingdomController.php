@@ -20,7 +20,7 @@ class KingdomController extends Controller
 
         $request->validate([
             'name' => ['required', 'string'],
-            'description' => ['string', 'max:10']
+            'description' => ['string', 'max:120']
         ]);
 
         try {

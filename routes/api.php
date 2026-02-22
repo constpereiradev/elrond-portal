@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CouncilController;
+use App\Http\Controllers\ExpeditionController;
+use App\Http\Controllers\ExpeditionStatusController;
 use App\Http\Controllers\KingdomController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -44,9 +46,20 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}', 'update')->where('id', '[0-9]+');
     });
 
-    Route::controller(KingdomController::class)->prefix('council')->group(function () {
+    Route::controller(KingdomController::class)->prefix('kingdom')->group(function () {
         Route::get('/', 'index');
         Route::post('/', 'store');
         Route::put('/{id}', 'update')->where('id', '[0-9]+');
+    });
+
+    Route::controller(ExpeditionController::class)->prefix('expedition')->group(function () {
+        Route::get('/{protocolId}', 'get');
+        Route::post('/', 'store');
+        Route::put('/{protocolId}', 'update');
+    });
+
+    Route::controller(ExpeditionStatusController::class)->prefix('expedition-status')->group(function () {
+        Route::get('/', 'index');
+        Route::post('/', 'store');
     });
 });

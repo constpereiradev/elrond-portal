@@ -17,32 +17,43 @@ class UserController extends Controller
             return $this->error([], 'User not found');
         }
 
-        return $this->success(['user' => $user]);
+        return $this->success(['user' => $user->load('role', 'council', 'kingdom')]);
     }
 
 
     public function getLogged(Request $request)
     {
-        return $this->success(['user' => $request->user()]);
+        return $this->success(['user' => $request->user()->load('role', 'council', 'kingdom')]);
     }
 
 
     public function store(Request $request)
     {
+        if (!empty($request->kingdom_id)) {
+            $request->merge([
+                'role_id' => Role::where('slug', 'REINO')->first()->id,
+            ]);
+        }
+
+        if (!empty($request->council_id)) {
+            $request->merge([
+                'role_id' => Role::where('slug', 'CONSELHO')->first()->id,
+            ]);
+        }
+
         $request->validate([
             'name' =>  ['required', 'string'],
             "email" =>  ['required', 'email'],
             "password" =>  ['required', 'string'],
-            'role_id' => ['required', 'integer', 'exists:roles,id,status,a'],
+            'role_id' => ['integer', 'exists:roles,id,status,a'],
             'kingdom_id' => ['integer', 'exists:kingdoms,id,status,a'],
-            'council_id' => ['integer', 'exists:council,id,status,a'],
+            'council_id' => ['integer', 'exists:councils,id,status,a'],
         ]);
 
         try {
 
             $role = Role::find($request->role_id);
             if ($role->slug == RoleEnum::admin) {
-
                 if ($request->user()->cannot('storeAdmin', User::class)) {
                     abort(403);
                 }
@@ -54,7 +65,7 @@ class UserController extends Controller
                 "email" => $request->email,
                 "password" => bcrypt($request->password),
                 'role_id' => $request->role_id,
-                'kindom_id' => $request->kindom_id ?? null, //TODO: Adicionar validação para enviar somente 1.
+                'kingdom_id' => $request->kingdom_id ?? null, //TODO: Adicionar validação para enviar somente 1.
                 'council_id' => $request->council_id ?? null,
             ]);
 

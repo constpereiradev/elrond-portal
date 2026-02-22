@@ -11,7 +11,7 @@ abstract class Controller
         $message = ['message' => $message];
         $sucessParams = array_merge($message, $params);
 
-        return response()->json($sucessParams);
+        return response()->json($sucessParams, 200);
     }
 
     public function error(?array $params = [], ?string $message = "Error"): JsonResponse

@@ -29,7 +29,8 @@ class User extends Authenticatable
         'password',
         'kingdom_id',
         'council_id',
-        'role_id'
+        'role_id',
+        'created_at'
     ];
 
     /**
@@ -58,5 +59,25 @@ class User extends Authenticatable
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function council(): BelongsTo
+    {
+        return $this->belongsTo(Council::class);
+    }
+
+    public function kingdom(): BelongsTo
+    {
+        return $this->belongsTo(Kingdom::class);
+    }
+
+    public function type(): string|null
+    {
+        return $this->role?->slug;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->role?->status == 'a';
     }
 }
