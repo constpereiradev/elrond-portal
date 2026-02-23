@@ -1,546 +1,139 @@
-# Elrond Portal API
+A documentação fornecida para o teste técnico parece estar bem clara e objetiva, com uma explicação concisa sobre como utilizar os endpoints e as regras de autorização. Ela cobre os aspectos principais de autenticação, autorização e fluxo de dados da API, o que facilita a implementação dos endpoints. Além disso, fornece informações essenciais, como os caminhos dos endpoints, os métodos HTTP e as regras de acesso.
 
-API RESTful para gerenciamento de reinos, conselhos, expedições e usuários no mundo de Elrond.
+A seguir, preparei um **README** com base nas informações fornecidas para o teste técnico da WebMania. O README será organizado de forma clara, destacando as seções principais: **Introdução**, **Requisitos**, **Uso da API**, **Endpoints Disponíveis**, e **Suporte**.
 
-## 📋 Visão Geral
-
-O Elrond Portal é uma API que permite gerenciar:
-- **Reinos (Kingdoms)**: Estruturas políticas organizacionais
-- **Conselhos (Councils)**: Órgãos deliberativos
-- **Expedições**: Missões ou jornadas
-- **Usuários**: Membros do sistema com diferentes funções e permissões
-- **Protocolos de Expedição**: Documentação estruturada de expedições
-- **Status de Expedição**: Estados possíveis das expedições
-
-## 🛠️ Requisitos
-
-- PHP 8.2 ou superior
-- Composer
-- Laravel 12.x
-- SQLite/MySQL
-
-## 🚀 Instalação e Configuração
-
-### 1. Clonar o repositório
-```bash
-git clone https://github.com/constpereiradev/elrond-portal.git
-cd elrond-portal
-```
-
-### 2. Instalar dependências
-```bash
-composer install
-npm install
-```
-
-### 3. Configuração do ambiente
-```bash
-cp .env.example .env
-php artisan key:generate
-```
-
-### 4. Migrar banco de dados
-```bash
-php artisan migrate
-php artisan db:seed
-```
-
-
-## 🔐 Autenticação
-
-A API utiliza **Laravel Sanctum** para autenticação baseada em tokens.
-
-### Fluxo de Autenticação
-
-1. **Login**: Envie credenciais para obter um token
-2. **Token Bearer**: Use o token no header `Authorization: Bearer {token}`
-3. **Logout**: Revogue o token quando necessário
-
-### Endpoints de Autenticação
-
-#### Login
-```http
-POST /api/auth
-Content-Type: application/json
-
-{
-  "email": "user@example.com",
-  "password": "password"
-}
-```
-
-**Resposta (200 OK)**:
-```json
-{
-  "data": {
-    "access_token": "1|AbCdEfGhIjKlMnOpQrStUvWxYz",
-    "token_type": "Bearer",
-    "type": "admin|reino|conselho"
-  }
-}
-```
-
-#### Logout
-```http
-POST /api/logout
-Authorization: Bearer {token}
-```
-
-**Resposta (200 OK)**:
-```json
-{
-  "data": {}
-}
-```
-
-## 📚 Endpoints da API
-
-### 🔓 Endpoints Públicos
-
-#### Roles (Funções)
-
-**Listar todas as funções**
-```http
-GET /api/role
-```
-
-**Resposta (200 OK)**:
-```json
-{
-  "data": [
-    {
-      "id": 1,
-      "name": "Administrador",
-      "slug": "admin",
-      "status": "a"
-    }
-  ]
-}
-```
-
-**Criar função (Admin)**
-```http
-POST /api/role
-Content-Type: application/json
-
-{
-  "name": "Nova Função",
-  "slug": "nova_funcao",
-  "status": "a"
-}
-```
-
-#### Usuários (Registro)
-
-**Criar novo usuário (Público)**
-```http
-POST /api/user
-Content-Type: application/json
-
-{
-  "name": "João Silva",
-  "email": "joao@example.com",
-  "password": "senha_segura",
-  "kingdom_id": 1,
-  "council_id": null,
-  "role_id": 2
-}
-```
-
-**Resposta (201 Created)**:
-```json
-{
-  "data": {
-    "id": 5
-  }
-}
-```
+### README para o Projeto de Teste Técnico da WebMania
 
 ---
 
-### 🔐 Endpoints Protegidos (Requer Autenticação)
+# **Teste Técnico - Portal Elrond**
 
-#### Usuários Autenticados
+Este repositório contém a API do Portal Elrond, desenvolvida para o teste técnico da WebMania. A API oferece funcionalidades para gerenciar usuários, papéis, conselhos, reinos e expedições, com diferentes níveis de acesso e autorização.
 
-**Obter usuário logado**
-```http
-GET /api/auth/user
-Authorization: Bearer {token}
-```
+## **Requisitos**
 
-**Resposta (200 OK)**:
-```json
-{
-  "data": {
-    "user": {
-      "id": 1,
-      "name": "João Silva",
-      "email": "joao@example.com",
-      "role_id": 1,
-      "kingdom_id": 1,
-      "council_id": null,
-      "created_at": "2026-02-21T10:00:00Z",
-      "role": {
-        "id": 1,
-        "name": "Administrador",
-        "slug": "admin"
-      },
-      "kingdom": { ... },
-      "council": null
-    }
-  }
-}
-```
+1. **Tecnologias Necessárias**:
 
-**Atualizar usuário logado**
-```http
-PUT /api/auth/user
-Authorization: Bearer {token}
-Content-Type: application/json
+   * PHP 8.x ou superior
+   * Composer
+   * Laravel 8.x ou superior
+   * Banco de dados (MySQL, SQLite, etc.)
 
-{
-  "name": "João Silva Atualizado",
-  "email": "novo_email@example.com",
-  "password": "nova_senha"
-}
-```
+2. **Passos para Iniciar**:
 
-**Deletar usuário logado**
-```http
-DELETE /api/auth/user
-Authorization: Bearer {token}
-```
+   * Clone o repositório do projeto:
 
-#### Gerenciamento de Usuários (Admin)
+     ```bash
+     git clone https://github.com/constpereiradev/elrond-portal.git
+     ```
+   * Acesse o diretório do projeto:
 
-**Obter usuário por ID**
-```http
-GET /api/user/{id}
-Authorization: Bearer {token}
-```
+     ```bash
+     cd elrond-portal
+     ```
+   * Instale as dependências do projeto:
 
-**Atualizar usuário**
-```http
-PUT /api/user/{id}
-Authorization: Bearer {token}
-Content-Type: application/json
+     ```bash
+     composer install
+     ```
+   * Rode as migrações e seeders para popular o banco de dados:
 
-{
-  "name": "Novo Nome",
-  "email": "novo@example.com",
-  "role_id": 2
-}
-```
+     ```bash
+     php artisan migrate --seed
+     ```
+   * Certifique-se de que as tecnologias necessárias estão configuradas corretamente.
 
-**Deletar usuário**
-```http
-DELETE /api/user/{id}
-Authorization: Bearer {token}
-```
+3. **Autenticação**:
+
+   * A API usa autenticação via **token JWT**. Para autenticar um usuário, basta acessar o endpoint `/auth` e obter o token, que será utilizado em todas as requisições subsequentes.
+
+## **Como Utilizar os Endpoints**
+
+### **Autenticação e Token**
+
+* **POST** `/auth`: Autentica um usuário e retorna um token JWT para autenticação nas requisições subsequentes.
+* **POST** `/logout`: Desloga o usuário autenticado.
+
+### **Autorização**
+
+* Apenas **administradores** podem cadastrar outros **administradores**.
+* Apenas **administradores** podem registrar **Conselhos** e **Reinos**.
+* Apenas **administradores** e **Conselhos** podem registrar **Reinos**.
+* Apenas **Reinos ativos** podem cadastrar uma nova **Expedição**.
+* Apenas **Conselhos ativos** podem atualizar uma **Expedição**.
+* O **fluxo de aprovação de expedição** é realizado pelo Conselho, que pode aprovar ou rejeitar a expedição com um motivo caso seja rejeitada.
 
 ---
 
-#### Reinos (Kingdoms)
+## **Endpoints da API**
 
-**Listar todos os reinos**
-```http
-GET /api/kingdom
-Authorization: Bearer {token}
-```
+Todos os endpoints da API estão disponíveis com o prefixo `/api/v1`. Abaixo está a lista de endpoints disponíveis.
 
-**Resposta (200 OK)**:
-```json
-{
-  "data": [
-    {
-      "id": 1,
-      "name": "Reino de Rivendell",
-      "description": "Reino dos Elfos",
-      "status": "a",
-      "created_at": "2026-02-21T10:00:00Z"
-    }
-  ]
-}
-```
+### **Autenticação**
 
-**Criar reino**
-```http
-POST /api/kingdom
-Authorization: Bearer {token}
-Content-Type: application/json
+* **POST** `/auth`: Autentica um usuário e retorna um token de autenticação.
+* **POST** `/logout`: Desloga um usuário.
 
-{
-  "name": "Novo Reino",
-  "description": "Descrição do reino",
-  "status": "a"
-}
-```
+### **Usuário**
 
-**Atualizar reino**
-```http
-PUT /api/kingdom/{id}
-Authorization: Bearer {token}
-Content-Type: application/json
+* **GET** `/auth/user`: Retorna os dados do usuário logado.
+* **POST** `/user`: Cadastra um novo usuário.
 
-{
-  "name": "Nome Atualizado",
-  "description": "Descrição atualizada",
-  "status": "a"
-}
-```
+### **Papel**
+
+* **GET** `/role`: Retorna os papéis disponíveis.
+* **POST** `/role`: Cadastra um novo papel.
+
+### **Conselho**
+
+* **GET** `/council`: Retorna os conselhos disponíveis.
+* **POST** `/council`: Cadastra um novo conselho.
+
+### **Reino**
+
+* **GET** `/kingdom`: Retorna os reinos disponíveis.
+* **POST** `/kingdom`: Cadastra um novo reino.
+
+### **Expedição**
+
+* **GET** `/expedition`: Retorna as expedições disponíveis.
+* **POST** `/expedition`: Cadastra uma nova expedição.
+* **PUT** `/expedition`: Atualiza uma expedição existente.
+
+### **Status de Expedição**
+
+* **GET** `/expedition-status`: Retorna os status disponíveis.
+* **POST** `/expedition-status`: Cadastra um novo status.
 
 ---
 
-#### Conselhos (Councils)
+## **Fluxo de Análise de uma Expedição**
 
-**Listar todos os conselhos**
-```http
-GET /api/council
-Authorization: Bearer {token}
-```
-
-**Resposta (200 OK)**:
-```json
-{
-  "data": [
-    {
-      "id": 1,
-      "name": "Conselho Branco",
-      "description": "Conselho dos Sábios",
-      "status": "a",
-      "created_at": "2026-02-21T10:00:00Z"
-    }
-  ]
-}
-```
-
-**Criar conselho**
-```http
-POST /api/council
-Authorization: Bearer {token}
-Content-Type: application/json
-
-{
-  "name": "Novo Conselho",
-  "description": "Descrição do conselho",
-  "status": "a"
-}
-```
-
-**Atualizar conselho**
-```http
-PUT /api/council/{id}
-Authorization: Bearer {token}
-Content-Type: application/json
-
-{
-  "name": "Nome Atualizado",
-  "description": "Descrição atualizada",
-  "status": "a"
-}
-```
+* Quando uma expedição é cadastrada, seu status inicial será **EM ANÁLISE**.
+* Um **Conselho** será responsável por decidir se a expedição será **aprovada** ou **rejeitada**.
+* Caso a expedição seja **rejeitada**, um motivo deve ser informado.
+* Se a expedição for **aprovada**, não é necessário fornecer um motivo.
 
 ---
 
-#### Expedições (Expeditions)
+## **Formato de Resposta**
 
-**Obter expedição por Protocol ID**
-```http
-GET /api/expedition/{protocolId}
-Authorization: Bearer {token}
-```
-
-**Resposta (200 OK)**:
-```json
-{
-  "data": {
-    "id": 1,
-    "name": "Expedição para o Mirkwood",
-    "description": "Missão de exploração",
-    "protocol_id": 1,
-    "status": "ativa",
-    "created_at": "2026-02-21T10:00:00Z"
-  }
-}
-```
-
-**Criar expedição**
-```http
-POST /api/expedition
-Authorization: Bearer {token}
-Content-Type: application/json
-
-{
-  "name": "Nova Expedição",
-  "description": "Descrição da expedição",
-  "protocol_id": 1,
-  "status": "planejamento"
-}
-```
-
-**Atualizar expedição**
-```http
-PUT /api/expedition/{protocolId}
-Authorization: Bearer {token}
-Content-Type: application/json
-
-{
-  "name": "Nome Atualizado",
-  "status": "em_progresso"
-}
-```
+Todas as respostas da API são retornadas no formato **JSON**. Caso ocorra uma exceção, o erro será retornado também em formato JSON com a descrição do erro.
 
 ---
 
-#### Status de Expedição
+## **Suporte**
 
-**Listar todos os status**
-```http
-GET /api/expedition-status
-Authorization: Bearer {token}
-```
+Se tiver dúvidas ou encontrar problemas, entre em contato com o suporte técnico:
 
-**Resposta (200 OK)**:
-```json
-{
-  "data": [
-    {
-      "id": 1,
-      "name": "Planejamento",
-      "slug": "planejamento",
-      "status": "a"
-    },
-    {
-      "id": 2,
-      "name": "Em Progresso",
-      "slug": "em_progresso",
-      "status": "a"
-    }
-  ]
-}
-```
-
-**Criar status**
-```http
-POST /api/expedition-status
-Authorization: Bearer {token}
-Content-Type: application/json
-
-{
-  "name": "Novo Status",
-  "slug": "novo_status",
-  "status": "a"
-}
-```
+* **Email**: [amandapereiradevcontact@gmail.com](mailto:amandapereiradevcontact@gmail.com)
+* **WhatsApp**: +55 71 9 8476-7953
+* **GitHub**: [GitHub - constpereiradev](https://github.com/constpereiradev)
 
 ---
 
-## 📊 Estrutura de Dados
+### Conclusão:
 
-### User
-- `id` (int): Identificador único
-- `name` (string): Nome do usuário
-- `email` (string): Email único
-- `password` (string): Senha hash
-- `kingdom_id` (int, nullable): ID do reino
-- `council_id` (int, nullable): ID do conselho
-- `role_id` (int): ID da função
-- `created_at` (timestamp)
+Este **README** cobre os pontos principais sobre como rodar o projeto, usar os endpoints e o fluxo de trabalho da API. A documentação está simples e direta, permitindo que qualquer desenvolvedor consiga utilizar a API para realizar as tarefas solicitadas sem dificuldades.
 
-### Kingdom
-- `id` (int): Identificador único
-- `name` (string): Nome do reino
-- `description` (text): Descrição
-- `status` (enum: 'a', 'i'): Ativo/Inativo
-- `created_at` (timestamp)
-
-### Council
-- `id` (int): Identificador único
-- `name` (string): Nome do conselho
-- `description` (text): Descrição
-- `status` (enum: 'a', 'i'): Ativo/Inativo
-- `created_at` (timestamp)
-
-### Role
-- `id` (int): Identificador único
-- `name` (string): Nome da função
-- `slug` (string): Identificador único em slug
-- `status` (enum: 'a', 'i'): Ativo/Inativo
-
-### Expedition
-- `id` (int): Identificador único
-- `name` (string): Nome da expedição
-- `description` (text): Descrição
-- `status` (string): Status atual
-- `protocol_id` (int): ID do protocolo
-- `created_at` (timestamp)
-
----
-
-## 🔍 Códigos de Status HTTP
-
-| Código | Significado |
-|--------|-------------|
-| 200 | OK - Requisição bem-sucedida |
-| 201 | Created - Recurso criado com sucesso |
-| 400 | Bad Request - Dados inválidos |
-| 401 | Unauthorized - Autenticação necessária |
-| 403 | Forbidden - Acesso negado (permissões) |
-| 404 | Not Found - Recurso não encontrado |
-| 422 | Unprocessable Entity - Validação falhou |
-| 500 | Internal Server Error - Erro no servidor |
-
----
-
-## 🛡️ Segurança e Permissões
-
-- Todas as rotas protegidas requerem autenticação via Bearer Token
-- As políticas (Policies) controlam acesso baseado em função
-- Senhas são hash com bcrypt
-- Tokens expiram conforme configurado no Sanctum
-- Validadores Laravel garantem integridade de dados
-
----
-
-## 📝 Exemplo Completo de Fluxo
-
-### 1. Registrar novo usuário
-```bash
-curl -X POST http://localhost:8000/api/user \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "João Silva",
-    "email": "joao@example.com",
-    "password": "senha123",
-    "role_id": 2
-  }'
-```
-
-### 2. Fazer login
-```bash
-curl -X POST http://localhost:8000/api/auth \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "joao@example.com",
-    "password": "senha123"
-  }'
-```
-
-### 3. Usar a API com token
-```bash
-curl -X GET http://localhost:8000/api/auth/user \
-  -H "Authorization: Bearer {seu_token_aqui}"
-```
-
-### 4. Fazer logout
-```bash
-curl -X POST http://localhost:8000/api/logout \
-  -H "Authorization: Bearer {seu_token_aqui}"
-```
-
----
-
-
-
-
-
+Se precisar de mais alguma alteração ou algum detalhe adicional no README, é só avisar!
