@@ -29,7 +29,7 @@ class ExpeditionController extends Controller
         try {
             $expedition = $this->expeditionService->getByProtocol($protocolId);
 
-            broadcast(new ExpeditionViewed($expedition))->toOthers();
+            broadcast(new ExpeditionViewed($expedition));//->toOthers();
 
             return $this->success(['expedition' => $expedition->load('status', 'kingdom', 'user', 'user.council')]);
         } catch (\Throwable $th) {
@@ -81,7 +81,7 @@ class ExpeditionController extends Controller
                     throw ExpeditionException::expeditionUpdatedAlready("Expedição já foi atualizada pelo Conselho para o status {$expedition->status->slug}.");
                 }
 
-                $this->expeditionService->validateStatusUpdate((int) $request->status_id);
+                $this->expeditionService->validateStatusUpdate((int) $request->status_id, $request);
 
                 $expedition->update([
                     'user_id' => $request->user()->id,
@@ -92,7 +92,7 @@ class ExpeditionController extends Controller
                 return $expedition;
             });
 
-            broadcast(new ExpeditionStatusChanged($expedition))->toOthers();
+            broadcast(new ExpeditionStatusChanged($expedition));//->toOthers();
         }
         return $this->success(['expedition' => $expedition]);
     }

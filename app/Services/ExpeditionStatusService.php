@@ -2,11 +2,7 @@
 
 namespace App\Services;
 
-use App\Enums\ExpeditionStatusEnum;
-use App\Exceptions\ExpeditionException;
-use App\Exceptions\RequestException;
 use App\Http\Requests\StoreExpeditionRequest;
-use App\Models\Expedition;
 use App\Models\ExpeditionStatus;
 use App\Services\Abstract\BaseService;
 

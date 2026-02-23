@@ -11,6 +11,7 @@ use App\Models\Expedition;
 use App\Models\ExpeditionProtocol;
 use App\Models\ExpeditionStatus;
 use App\Services\Abstract\BaseService;
+use Symfony\Component\HttpFoundation\Request;
 
 class ExpeditionService extends BaseService
 {
@@ -36,13 +37,13 @@ class ExpeditionService extends BaseService
         return Expedition::create([
             'kingdom_id' => $request->kingdom_id,
             'start_date' => $request->start_date,
-            'status_id' => ExpeditionStatus::where('slug', 'analise')->first()->id,
+            'status_id' => ExpeditionStatus::where('slug', ExpeditionStatusEnum::analise->value)->first()->id,
             'artifacts' => $request->artifacts ?? null,
             'note' => $request->note ?? null
         ]);
     }
 
-    public function validateStatusUpdate(int $statusId)
+    public function validateStatusUpdate(int $statusId, Request $request): void
     {
         $expeditionStatus = ExpeditionStatus::find($statusId)->slug;
 
