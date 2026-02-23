@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Services;
+
+use App\Enums\ExpeditionStatusEnum;
+use App\Exceptions\ExpeditionException;
+use App\Exceptions\RequestException;
+use App\Http\Requests\StoreExpeditionRequest;
+use App\Models\Expedition;
+use App\Models\ExpeditionStatus;
+use App\Services\Abstract\BaseService;
+
+class ExpeditionStatusService extends BaseService
+{
+
+    public function register(StoreExpeditionRequest $request): ExpeditionStatus
+    {
+        return ExpeditionStatus::create([
+            'status' => $request->status,
+            'slug' => strtoupper($request->slug),
+            'description' => $request->description
+        ]);
+    }
+}

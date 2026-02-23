@@ -33,13 +33,13 @@ class UserController extends Controller
 
         if (!empty($request->kingdom_id)) {
             $request->merge([
-                'role_id' => Role::where('slug', 'REINO')->first()->id,
+                'role_id' => Role::where('slug', RoleEnum::reino->value)->first()->id,
             ]);
         }
 
         if (!empty($request->council_id)) {
             $request->merge([
-                'role_id' => Role::where('slug', 'CONSELHO')->first()->id,
+                'role_id' => Role::where('slug', RoleEnum::conselho->value)->first()->id,
             ]);
         }
 
@@ -51,7 +51,7 @@ class UserController extends Controller
 
             $user = $this->userService->store($request);
 
-            return $this->success(['id' => $user->id]);
+            return $this->success(['user' => $user]);
         } catch (\Exception $e) {
             $this->logService->logError('Failed to create user', ['error' => $e->getMessage()]);
 

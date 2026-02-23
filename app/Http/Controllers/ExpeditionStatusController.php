@@ -3,13 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ExpeditionStatusException;
+use App\Http\Requests\StoreExpeditionStatusRequest;
 use App\Models\ExpeditionStatus;
+use App\Services\ExpeditionStatusService;
 use App\Services\LogService;
 use Illuminate\Http\Request;
 
 class ExpeditionStatusController extends Controller
 {
-    public function __construct(private readonly LogService $logService) {}
+    public function __construct(
+        private readonly LogService $logService,
+        private readonly ExpeditionStatusService $expeditionStatusService
+    ) {}
+
 
     public function index()
     {
@@ -17,20 +23,12 @@ class ExpeditionStatusController extends Controller
         return $this->success(['expedition_statuses' => $expeditionStatus]);
     }
 
-    public function store(Request $request)
+    public function store(StoreExpeditionStatusRequest $request)
     {
-        $request->validate([
-            'status' => ['required', 'string'],
-            'slug' => ['required', 'string'],
-            'description' => ['string']
-        ]);
+        $request = $request->validated();
 
         try {
-            $status = ExpeditionStatus::create([
-                'status' => $request->status,
-                'slug' => strtoupper($request->slug),
-                'description' => $request->description
-            ]);
+            $status = $this->expeditionStatusService->register($request);
 
             return $this->success(['expedition_status' => $status]);
         } catch (\Exception $e) {
