@@ -11,7 +11,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ExpeditionStatusChanged implements ShouldBroadcast
+class ExpeditionViewed implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,7 +19,7 @@ class ExpeditionStatusChanged implements ShouldBroadcast
      * Create a new event instance.
      */
     public function __construct(
-        public Expedition $expedition,
+        public Expedition $expedition
     ) {
         //
     }
@@ -38,6 +38,6 @@ class ExpeditionStatusChanged implements ShouldBroadcast
 
     public function broadcastAs(): string
     {
-        return 'status.changed';
+        return 'viewed';
     }
 }

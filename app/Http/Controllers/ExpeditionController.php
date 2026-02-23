@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ExpeditionStatusEnum;
 use App\Events\ExpeditionStatusChanged;
+use App\Events\ExpeditionViewed;
 use App\Models\Expedition;
 use App\Models\ExpeditionProtocol;
 use App\Models\ExpeditionStatus;
@@ -27,6 +28,8 @@ class ExpeditionController extends Controller
         }
 
         $expedition = $this->expeditionService->getByProtocol($protocolId);
+
+        broadcast(new ExpeditionViewed($expedition));//->toOthers();
 
         return $this->success(['expedition' => $expedition->load('status', 'kingdom', 'user', 'user.council')]);
     }
