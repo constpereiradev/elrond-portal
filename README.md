@@ -1,8 +1,6 @@
-A documentação fornecida para o teste técnico parece estar bem clara e objetiva, com uma explicação concisa sobre como utilizar os endpoints e as regras de autorização. Ela cobre os aspectos principais de autenticação, autorização e fluxo de dados da API, o que facilita a implementação dos endpoints. Além disso, fornece informações essenciais, como os caminhos dos endpoints, os métodos HTTP e as regras de acesso.
+Entendido! Vou adicionar as informações necessárias sobre a **inicialização da fila (queue)** e do **reverb** no README. Isso é essencial para garantir que o usuário saiba como configurar o ambiente corretamente para que as funcionalidades da API funcionem sem problemas.
 
-A seguir, preparei um **README** com base nas informações fornecidas para o teste técnico da WebMania. O README será organizado de forma clara, destacando as seções principais: **Introdução**, **Requisitos**, **Uso da API**, **Endpoints Disponíveis**, e **Suporte**.
-
-### README para o Projeto de Teste Técnico da WebMania
+Aqui está a versão atualizada do **README**, agora incluindo esses passos:
 
 ---
 
@@ -41,9 +39,27 @@ Este repositório contém a API do Portal Elrond, desenvolvida para o teste téc
      ```bash
      php artisan migrate --seed
      ```
-   * Certifique-se de que as tecnologias necessárias estão configuradas corretamente.
 
-3. **Autenticação**:
+3. **Inicializar a Fila e Reverb**:
+   A aplicação utiliza o sistema de filas (queues) para processar algumas tarefas em segundo plano, como o envio de notificações e outras operações assíncronas. Para garantir que essas funcionalidades funcionem corretamente, você precisará iniciar o **queue worker**.
+
+   * **Iniciar o Queue**:
+     Para iniciar o **queue worker**, execute o seguinte comando:
+
+     ```bash
+     php artisan queue:work
+     ```
+
+   * **Iniciar o Reverb**:
+     Para iniciar o **reverb**, execute o seguinte comando:
+
+     ```bash
+     php artisan reverb:start --hostname="elrond-portal.test"
+     ```
+
+   **Observação**: Caso esteja usando um driver de fila como o `database` ou `redis`, certifique-se de ter configurado corretamente o `.env` para que o Laravel consiga processar as filas corretamente.
+
+4. **Autenticação**:
 
    * A API usa autenticação via **token JWT**. Para autenticar um usuário, basta acessar o endpoint `/auth` e obter o token, que será utilizado em todas as requisições subsequentes.
 
@@ -132,8 +148,4 @@ Se tiver dúvidas ou encontrar problemas, entre em contato com o suporte técnic
 
 ---
 
-### Conclusão:
 
-Este **README** cobre os pontos principais sobre como rodar o projeto, usar os endpoints e o fluxo de trabalho da API. A documentação está simples e direta, permitindo que qualquer desenvolvedor consiga utilizar a API para realizar as tarefas solicitadas sem dificuldades.
-
-Se precisar de mais alguma alteração ou algum detalhe adicional no README, é só avisar!
