@@ -15,12 +15,4 @@ class CouncilPolicy
     {
         return strtoupper($user->role->slug) == RoleEnum::admin;
     }
-
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user): bool
-    {
-        return strtoupper($user->role->slug) == RoleEnum::admin;
-    }
 }

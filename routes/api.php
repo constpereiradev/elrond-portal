@@ -23,13 +23,17 @@ Route::controller(RoleController::class)->prefix('role')->group(function () {
 // --- Rotas Protegidas ---
 Route::middleware('auth:sanctum')->group(function () {
 
-    // --- Rotas de usuário logado ---
     Route::controller(UserController::class)->prefix('auth')->group(function () {
         Route::get('/user', 'get');
     });
 
     Route::controller(AuthController::class)->group(function () {
         Route::post('/logout', 'logout');
+    });
+
+    Route::controller(RoleController::class)->prefix('role')->group(function () {
+        Route::get('/', 'get');
+        Route::post('/', 'store');
     });
 
     Route::controller(CouncilController::class)->prefix('council')->group(function () {

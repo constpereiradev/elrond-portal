@@ -16,14 +16,4 @@ class KingdomPolicy
     {
         return $user->role->slug == RoleEnum::admin->value;
     }
-
-    /**
-     * Apenas administradores podem atualizar reinos.
-     * @param $user Usuário logado.
-     * @return bool
-     */
-    public function update(User $user): bool
-    {
-        return $user->role->slug == RoleEnum::admin->value;
-    }
 }
