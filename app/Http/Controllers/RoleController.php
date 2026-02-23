@@ -2,70 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\RoleException;
+use App\Http\Requests\StoreRoleRequest;
 use App\Models\Role;
-use Illuminate\Http\Request;
+use App\Services\LogService;
+use App\Services\RoleService;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct(
+        private readonly LogService $logService,
+        private readonly RoleService $roleService
+    ) {}
+
     public function index()
     {
-        return Role::all();
+        $roles = Role::all();
+        return $this->success(['roles' => $roles]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
-        $request->validate([
-            'name' => ['required', 'string'],
-            'slug' => ['required', 'string']
-        ]);
+        $request = $request->validated();
 
         try {
-            $role = Role::create([
-                'name' => $request->name,
-                'slug' => strtoupper($request->slug),
-            ]);
-            
+            $role = $this->roleService->store($request);
             return $this->success(['role' => $role]);
+
         } catch (\Exception $e) {
-            return $this->success([], $e->getMessage());
+            $this->logService->logError('Failed to create role', ['error' => $e->getMessage()]);
+
+            throw RoleException::registerFailed();
         }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
