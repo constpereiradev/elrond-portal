@@ -1,59 +1,546 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Elrond Portal API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API RESTful para gerenciamento de reinos, conselhos, expedições e usuários no mundo de Elrond.
 
-## About Laravel
+## 📋 Visão Geral
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+O Elrond Portal é uma API que permite gerenciar:
+- **Reinos (Kingdoms)**: Estruturas políticas organizacionais
+- **Conselhos (Councils)**: Órgãos deliberativos
+- **Expedições**: Missões ou jornadas
+- **Usuários**: Membros do sistema com diferentes funções e permissões
+- **Protocolos de Expedição**: Documentação estruturada de expedições
+- **Status de Expedição**: Estados possíveis das expedições
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🛠️ Requisitos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.2 ou superior
+- Composer
+- Laravel 12.x
+- SQLite/MySQL
 
-## Learning Laravel
+## 🚀 Instalação e Configuração
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 1. Clonar o repositório
+```bash
+git clone https://github.com/constpereiradev/elrond-portal.git
+cd elrond-portal
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. Instalar dependências
+```bash
+composer install
+npm install
+```
 
-## Laravel Sponsors
+### 3. Configuração do ambiente
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 4. Migrar banco de dados
+```bash
+php artisan migrate
+php artisan db:seed
+```
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 🔐 Autenticação
 
-## Contributing
+A API utiliza **Laravel Sanctum** para autenticação baseada em tokens.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Fluxo de Autenticação
 
-## Code of Conduct
+1. **Login**: Envie credenciais para obter um token
+2. **Token Bearer**: Use o token no header `Authorization: Bearer {token}`
+3. **Logout**: Revogue o token quando necessário
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Endpoints de Autenticação
 
-## Security Vulnerabilities
+#### Login
+```http
+POST /api/auth
+Content-Type: application/json
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+{
+  "email": "user@example.com",
+  "password": "password"
+}
+```
 
-## License
+**Resposta (200 OK)**:
+```json
+{
+  "data": {
+    "access_token": "1|AbCdEfGhIjKlMnOpQrStUvWxYz",
+    "token_type": "Bearer",
+    "type": "admin|reino|conselho"
+  }
+}
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### Logout
+```http
+POST /api/logout
+Authorization: Bearer {token}
+```
+
+**Resposta (200 OK)**:
+```json
+{
+  "data": {}
+}
+```
+
+## 📚 Endpoints da API
+
+### 🔓 Endpoints Públicos
+
+#### Roles (Funções)
+
+**Listar todas as funções**
+```http
+GET /api/role
+```
+
+**Resposta (200 OK)**:
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Administrador",
+      "slug": "admin",
+      "status": "a"
+    }
+  ]
+}
+```
+
+**Criar função (Admin)**
+```http
+POST /api/role
+Content-Type: application/json
+
+{
+  "name": "Nova Função",
+  "slug": "nova_funcao",
+  "status": "a"
+}
+```
+
+#### Usuários (Registro)
+
+**Criar novo usuário (Público)**
+```http
+POST /api/user
+Content-Type: application/json
+
+{
+  "name": "João Silva",
+  "email": "joao@example.com",
+  "password": "senha_segura",
+  "kingdom_id": 1,
+  "council_id": null,
+  "role_id": 2
+}
+```
+
+**Resposta (201 Created)**:
+```json
+{
+  "data": {
+    "id": 5
+  }
+}
+```
+
+---
+
+### 🔐 Endpoints Protegidos (Requer Autenticação)
+
+#### Usuários Autenticados
+
+**Obter usuário logado**
+```http
+GET /api/auth/user
+Authorization: Bearer {token}
+```
+
+**Resposta (200 OK)**:
+```json
+{
+  "data": {
+    "user": {
+      "id": 1,
+      "name": "João Silva",
+      "email": "joao@example.com",
+      "role_id": 1,
+      "kingdom_id": 1,
+      "council_id": null,
+      "created_at": "2026-02-21T10:00:00Z",
+      "role": {
+        "id": 1,
+        "name": "Administrador",
+        "slug": "admin"
+      },
+      "kingdom": { ... },
+      "council": null
+    }
+  }
+}
+```
+
+**Atualizar usuário logado**
+```http
+PUT /api/auth/user
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "João Silva Atualizado",
+  "email": "novo_email@example.com",
+  "password": "nova_senha"
+}
+```
+
+**Deletar usuário logado**
+```http
+DELETE /api/auth/user
+Authorization: Bearer {token}
+```
+
+#### Gerenciamento de Usuários (Admin)
+
+**Obter usuário por ID**
+```http
+GET /api/user/{id}
+Authorization: Bearer {token}
+```
+
+**Atualizar usuário**
+```http
+PUT /api/user/{id}
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "Novo Nome",
+  "email": "novo@example.com",
+  "role_id": 2
+}
+```
+
+**Deletar usuário**
+```http
+DELETE /api/user/{id}
+Authorization: Bearer {token}
+```
+
+---
+
+#### Reinos (Kingdoms)
+
+**Listar todos os reinos**
+```http
+GET /api/kingdom
+Authorization: Bearer {token}
+```
+
+**Resposta (200 OK)**:
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Reino de Rivendell",
+      "description": "Reino dos Elfos",
+      "status": "a",
+      "created_at": "2026-02-21T10:00:00Z"
+    }
+  ]
+}
+```
+
+**Criar reino**
+```http
+POST /api/kingdom
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "Novo Reino",
+  "description": "Descrição do reino",
+  "status": "a"
+}
+```
+
+**Atualizar reino**
+```http
+PUT /api/kingdom/{id}
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "Nome Atualizado",
+  "description": "Descrição atualizada",
+  "status": "a"
+}
+```
+
+---
+
+#### Conselhos (Councils)
+
+**Listar todos os conselhos**
+```http
+GET /api/council
+Authorization: Bearer {token}
+```
+
+**Resposta (200 OK)**:
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Conselho Branco",
+      "description": "Conselho dos Sábios",
+      "status": "a",
+      "created_at": "2026-02-21T10:00:00Z"
+    }
+  ]
+}
+```
+
+**Criar conselho**
+```http
+POST /api/council
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "Novo Conselho",
+  "description": "Descrição do conselho",
+  "status": "a"
+}
+```
+
+**Atualizar conselho**
+```http
+PUT /api/council/{id}
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "Nome Atualizado",
+  "description": "Descrição atualizada",
+  "status": "a"
+}
+```
+
+---
+
+#### Expedições (Expeditions)
+
+**Obter expedição por Protocol ID**
+```http
+GET /api/expedition/{protocolId}
+Authorization: Bearer {token}
+```
+
+**Resposta (200 OK)**:
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "Expedição para o Mirkwood",
+    "description": "Missão de exploração",
+    "protocol_id": 1,
+    "status": "ativa",
+    "created_at": "2026-02-21T10:00:00Z"
+  }
+}
+```
+
+**Criar expedição**
+```http
+POST /api/expedition
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "Nova Expedição",
+  "description": "Descrição da expedição",
+  "protocol_id": 1,
+  "status": "planejamento"
+}
+```
+
+**Atualizar expedição**
+```http
+PUT /api/expedition/{protocolId}
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "Nome Atualizado",
+  "status": "em_progresso"
+}
+```
+
+---
+
+#### Status de Expedição
+
+**Listar todos os status**
+```http
+GET /api/expedition-status
+Authorization: Bearer {token}
+```
+
+**Resposta (200 OK)**:
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Planejamento",
+      "slug": "planejamento",
+      "status": "a"
+    },
+    {
+      "id": 2,
+      "name": "Em Progresso",
+      "slug": "em_progresso",
+      "status": "a"
+    }
+  ]
+}
+```
+
+**Criar status**
+```http
+POST /api/expedition-status
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "Novo Status",
+  "slug": "novo_status",
+  "status": "a"
+}
+```
+
+---
+
+## 📊 Estrutura de Dados
+
+### User
+- `id` (int): Identificador único
+- `name` (string): Nome do usuário
+- `email` (string): Email único
+- `password` (string): Senha hash
+- `kingdom_id` (int, nullable): ID do reino
+- `council_id` (int, nullable): ID do conselho
+- `role_id` (int): ID da função
+- `created_at` (timestamp)
+
+### Kingdom
+- `id` (int): Identificador único
+- `name` (string): Nome do reino
+- `description` (text): Descrição
+- `status` (enum: 'a', 'i'): Ativo/Inativo
+- `created_at` (timestamp)
+
+### Council
+- `id` (int): Identificador único
+- `name` (string): Nome do conselho
+- `description` (text): Descrição
+- `status` (enum: 'a', 'i'): Ativo/Inativo
+- `created_at` (timestamp)
+
+### Role
+- `id` (int): Identificador único
+- `name` (string): Nome da função
+- `slug` (string): Identificador único em slug
+- `status` (enum: 'a', 'i'): Ativo/Inativo
+
+### Expedition
+- `id` (int): Identificador único
+- `name` (string): Nome da expedição
+- `description` (text): Descrição
+- `status` (string): Status atual
+- `protocol_id` (int): ID do protocolo
+- `created_at` (timestamp)
+
+---
+
+## 🔍 Códigos de Status HTTP
+
+| Código | Significado |
+|--------|-------------|
+| 200 | OK - Requisição bem-sucedida |
+| 201 | Created - Recurso criado com sucesso |
+| 400 | Bad Request - Dados inválidos |
+| 401 | Unauthorized - Autenticação necessária |
+| 403 | Forbidden - Acesso negado (permissões) |
+| 404 | Not Found - Recurso não encontrado |
+| 422 | Unprocessable Entity - Validação falhou |
+| 500 | Internal Server Error - Erro no servidor |
+
+---
+
+## 🛡️ Segurança e Permissões
+
+- Todas as rotas protegidas requerem autenticação via Bearer Token
+- As políticas (Policies) controlam acesso baseado em função
+- Senhas são hash com bcrypt
+- Tokens expiram conforme configurado no Sanctum
+- Validadores Laravel garantem integridade de dados
+
+---
+
+## 📝 Exemplo Completo de Fluxo
+
+### 1. Registrar novo usuário
+```bash
+curl -X POST http://localhost:8000/api/user \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "João Silva",
+    "email": "joao@example.com",
+    "password": "senha123",
+    "role_id": 2
+  }'
+```
+
+### 2. Fazer login
+```bash
+curl -X POST http://localhost:8000/api/auth \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "joao@example.com",
+    "password": "senha123"
+  }'
+```
+
+### 3. Usar a API com token
+```bash
+curl -X GET http://localhost:8000/api/auth/user \
+  -H "Authorization: Bearer {seu_token_aqui}"
+```
+
+### 4. Fazer logout
+```bash
+curl -X POST http://localhost:8000/api/logout \
+  -H "Authorization: Bearer {seu_token_aqui}"
+```
+
+---
+
+
+
+
+
