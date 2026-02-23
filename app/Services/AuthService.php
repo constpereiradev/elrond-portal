@@ -2,12 +2,21 @@
 
 namespace App\Services;
 
-use App\Models\User;
+use App\Exceptions\AuthException;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthService
 {
+    public function AuthenticateAndGenerateToken(array $credentials): string
+    {
+        if (!$this->authenticate($credentials)) {
+            throw AuthException::invalidCredentials();
+        }
+
+        return $this->generateAuthToken();
+    }
+
     public function authenticate(array $credentials): bool
     {
         return Auth::attempt($credentials);
@@ -15,7 +24,13 @@ class AuthService
 
     public function generateAuthToken(): string
     {
-        $token = Auth::user()->createToken('auth_token')->plainTextToken;
+        $user = Auth::user();
+
+        if (!$user) {
+            throw AuthException::authFailed();
+        }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return $token;
     }
@@ -24,11 +39,11 @@ class AuthService
     {
         $token = $user->currentAccessToken();
 
-        if ($token instanceof PersonalAccessToken) {
-            $token->delete();
-            return true;
+        if (!$token instanceof PersonalAccessToken) {
+            throw AuthException::invalidToken();
         }
 
-        return false;
+        $token->delete();
+        return true;
     }
 }

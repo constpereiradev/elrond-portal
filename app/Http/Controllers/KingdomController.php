@@ -2,26 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\KingdomException;
+use App\Http\Requests\StoreKingdomRequest;
 use App\Models\Kingdom;
-use Illuminate\Http\Request;
+use App\Services\KingdomService;
+use App\Services\LogService;
 
 class KingdomController extends Controller
 {
+    public function __construct(
+        private readonly KingdomService $kingdomService,
+        private readonly LogService $logService
+    ) {}
+
     public function index()
     {
-        return Kingdom::all();
+        $kingdoms = Kingdom::all();
+        return $this->success(['kingdoms' => $kingdoms]);
     }
 
-    public function store(Request $request)
+    public function store(StoreKingdomRequest $request)
     {
-        if ($request->user()->cannot('store', Kingdom::class)) {
-            abort(403);
-        }
-
-        $request->validate([
-            'name' => ['required', 'string'],
-            'description' => ['string', 'max:120']
-        ]);
+        $this->kingdomService->validatePermission('store', $request->user(), Kingdom::class);
+        $request = $request->validated();
 
         try {
             $kingdom = Kingdom::create([
@@ -31,47 +34,9 @@ class KingdomController extends Controller
 
             return $this->success(['Kingdom' => $kingdom]);
         } catch (\Exception $e) {
-            return $this->error([], $e->getMessage());
-        }
-    }
+            $this->logService->logError('Failed to create kingdom', ['error' => $e->getMessage()]);
 
-    public function update(int $id, Request $request)
-    {
-        if ($request->user()->cannot('update', Kingdom::class)) {
-            abort(403);
-        }
-
-        $kingdom = Kingdom::find($id);
-
-        if (!$kingdom) {
-            return $this->error([], 'Kingdom not found');
-        }
-
-        $request->validate([
-            'name' => ['sometimes', 'string'],
-            'description' =>  ['sometimes', 'string', 'max:120'],
-            'active' => ['sometimes', 'string', 'in:a,i'],
-        ]);
-
-        try {
-
-            if (!empty($request->name)) {
-                $kingdom->name = $request->name;
-            }
-
-            if (!empty($request->description)) {
-                $kingdom->description = $request->description;
-            }
-
-            if (!empty($request->active)) {
-                $kingdom->active = $request->active;
-            }
-
-            $kingdom->save();
-
-            return $this->success(['Kingdom' => $kingdom]);
-        } catch (\Exception $e) {
-            return $this->error([], $e->getMessage());
+            throw KingdomException::registerFailed();
         }
     }
 }

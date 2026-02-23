@@ -25,15 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // --- Rotas de usuário logado ---
     Route::controller(UserController::class)->prefix('auth')->group(function () {
-        Route::get('/user', 'getLogged');
-        Route::put('/user', 'updateLogged');
-        Route::delete('/user', 'destroyLogged');
-    });
-
-    Route::controller(UserController::class)->group(function () {
-        Route::get('/user/{id}', 'get')->where('id', '[0-9]+');
-        Route::put('/user/{id}', 'update')->where('id', '[0-9]+');
-        Route::delete('/user/{id}', 'destroy')->where('id', '[0-9]+');
+        Route::get('/user', 'get');
     });
 
     Route::controller(AuthController::class)->group(function () {
@@ -43,13 +35,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(CouncilController::class)->prefix('council')->group(function () {
         Route::get('/', 'index');
         Route::post('/', 'store');
-        Route::put('/{id}', 'update')->where('id', '[0-9]+');
     });
 
     Route::controller(KingdomController::class)->prefix('kingdom')->group(function () {
         Route::get('/', 'index');
         Route::post('/', 'store');
-        Route::put('/{id}', 'update')->where('id', '[0-9]+');
     });
 
     Route::controller(ExpeditionController::class)->prefix('expedition')->group(function () {

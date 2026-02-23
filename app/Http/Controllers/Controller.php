@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 abstract class Controller
 {
-    public function success(?array $params = [], ?string $message = "Sucess", ): JsonResponse
+    public function success(?array $params = [], ?string $message = "Sucess",): JsonResponse
     {
         $message = ['message' => $message];
         $sucessParams = array_merge($message, $params);

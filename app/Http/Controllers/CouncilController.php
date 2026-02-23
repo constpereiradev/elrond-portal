@@ -2,76 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\CouncilException;
+use App\Http\Requests\StoreCouncilRequest;
 use App\Models\Council;
+use App\Services\CouncilService;
+use App\Services\LogService;
 use Illuminate\Http\Request;
 
 class CouncilController extends Controller
 {
+    public function __construct(
+        private readonly CouncilService $councilService,
+        private readonly LogService $logService
+    ) {}
+
     public function index()
     {
-        return Council::all();
+        $councils = Council::all();
+        return $this->success(['councils' => $councils]);
     }
 
-    public function store(Request $request)
+    public function store(StoreCouncilRequest $request)
     {
-        if ($request->user()->cannot('store', Council::class)) {
-            abort(403);
-        }
-
-        $request->validate([
-            'name' => ['required', 'string'],
-            'description' => ['string', 'max:10']
-        ]);
+        $this->councilService->validatePermission('store', $request->user(), Council::class);
+        $request = $request->validated();
 
         try {
-            $council = Council::create([
-                'name' => $request->name,
-                'description' => $request->description ?? null
-            ]);
+            $council = $this->councilService->store($request);
 
             return $this->success(['council' => $council]);
         } catch (\Exception $e) {
-            return $this->error([], $e->getMessage());
-        }
-    }
-
-    public function update(int $id, Request $request)
-    {
-        if ($request->user()->cannot('update', Council::class)) {
-            abort(403);
-        }
-
-        $council = Council::find($id);
-
-        if (!$council) {
-            return $this->error([], 'Council not found');
-        }
-
-        $request->validate([
-            'name' => ['sometimes', 'string'],
-            'description' =>  ['sometimes', 'string', 'max:120'],
-            'active' => ['sometimes', 'string', 'in:a,i'],
-        ]);
-
-        try {
-
-            if (!empty($request->name)) {
-                $council->name = $request->name;
-            }
-
-            if (!empty($request->description)) {
-                $council->description = $request->description;
-            }
-
-            if (!empty($request->active)) {
-                $council->active = $request->active;
-            }
-
-            $council->save();
-
-            return $this->success(['council' => $council]);
-        } catch (\Exception $e) {
-            return $this->error([], $e->getMessage());
+            $this->logService->logError('Failed to create council', ['error' => $e->getMessage()]);
+            throw CouncilException::registerFailed();
         }
     }
 }
