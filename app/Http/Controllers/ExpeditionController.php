@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ExpeditionStatusEnum;
+use App\Events\ExpeditionStatusChanged;
 use App\Models\Expedition;
 use App\Models\ExpeditionProtocol;
 use App\Models\ExpeditionStatus;
@@ -10,6 +11,7 @@ use App\Models\User;
 use App\Services\ExpeditionService;
 use App\Services\ProtocolService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ExpeditionController extends Controller
 {
@@ -46,18 +48,23 @@ class ExpeditionController extends Controller
                 'note' => ['text'],
             ]);
 
-            $expedition = Expedition::create([
-                'kingdom_id' => $request->kingdom_id,
-                'start_date' => $request->start_date,
-                'status_id' => ExpeditionStatus::where('slug', 'analise')->first()->id,
-                'artifacts' => $request->artifacts ?? null,
-                'note' => $request->note ?? null
-            ]);
+            $protocol = DB::transaction(function () use ($request) {
 
-            //Deve ser gerado um protocolo e retornado.
-            $protocol = $this->protocolService->generateProtocol($expedition);
+                $expedition = Expedition::create([
+                    'kingdom_id' => $request->kingdom_id,
+                    'start_date' => $request->start_date,
+                    'status_id' => ExpeditionStatus::where('slug', 'analise')->first()->id,
+                    'artifacts' => $request->artifacts ?? null,
+                    'note' => $request->note ?? null
+                ]);
+
+                //Deve ser gerado um protocolo e retornado.
+                $protocol = $this->protocolService->generateProtocol($expedition);
+                return $protocol;
+            });
 
             return $this->success(['protocol' => $protocol->uuid]);
+
         } catch (\Exception $e) {
             return $this->error([], $e->getMessage());
         }
@@ -71,11 +78,14 @@ class ExpeditionController extends Controller
 
         $expedition = $this->expeditionService->getByProtocol($protocolId);
 
+        if(empty($expedition)){
+            return $this->error([], 'Expedition not found');
+        }
+
         if (!empty($request->status_id)) {
             if (!$request->user()->can('updateStatus', Expedition::class)) {
                 abort(403);
             }
-
 
             if (in_array($expedition->status->slug, [
                 ExpeditionStatusEnum::rejeitada->value,
@@ -86,9 +96,9 @@ class ExpeditionController extends Controller
 
             $expeditionStatus = ExpeditionStatus::find($request->status_id);
 
-            if($expeditionStatus->slug == ExpeditionStatusEnum::rejeitada->value) {
+            if ($expeditionStatus->slug == ExpeditionStatusEnum::rejeitada->value) {
 
-                if(empty($request->rejection_reason)){
+                if (empty($request->rejection_reason)) {
                     return $this->error(['fields' => ['rejection_reason']], 'Para rejeitar uma expedição, deve ser informado o motivo.*');
                 }
 
@@ -97,6 +107,11 @@ class ExpeditionController extends Controller
 
             $expedition->user_id = $request->user()->id;
             $expedition->status_id = $request->status_id;
+
+
+            // Dispara evento de status alterado
+            broadcast(new ExpeditionStatusChanged($expedition));//->toOthers();
+            // toOthers permite que o evento seja disparado apenas para outros usuários, e não para quem realizou a ação.
         }
 
         $expedition->save();
