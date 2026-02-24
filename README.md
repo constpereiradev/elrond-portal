@@ -165,9 +165,20 @@ Todos os endpoints da API estão disponíveis com o prefixo `/api/v1`. Abaixo es
 
 Todas as respostas da API são retornadas no formato **JSON**. Caso ocorra uma exceção, o erro será retornado também em formato JSON com a descrição do erro.
 
+---
+
+
 ## **Documentação - Postman**
 Acesse esta documentação no Postman aqui: [Elrond Portal Api Documentation - Postman](https://martian-firefly-354203.postman.co/workspace/Elrond-Portal~87b062f2-06a6-4d0e-ab0a-5b9149c062b6/folder/25684396-19c6f41a-5219-4905-9c7e-cafdf0af9f36?action=share&creator=25684396&ctx=documentation&active-environment=25684396-d16bef87-f318-4c4d-a1b4-523903842555)
 
+
+## **Documentação - Swagger**
+Esta API está documentada com Swagger. Para gerar, rode o comando abaixo:
+    ```bash
+    php artisan l5-swagger:generate
+    ```
+
+A documentação estará disponível em: [Elrond Portal Api Documentation - Swagger](https://elrond-portal.test/api/documentation)
 ---
 
 ## **Suporte**
