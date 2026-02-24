@@ -29,6 +29,6 @@ class UserException extends Exception
 
     public static function invalidAssociation(?string $message = null): self
     {
-        return new self($message ?? 'Usuário não pode pertencer a ambos reino e conselho.', Response::HTTP_FORBIDDEN);
+        return new self($message ?? 'Usuário não pode pertencer a ambos reino e conselho.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }
