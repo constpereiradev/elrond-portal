@@ -63,6 +63,6 @@ class AuthTest extends TestCase
     public function cannot_logout_a_user_that_does_not_exist()
     {
         $response = $this->postJson('api/v1/logout', []);
-        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 }
