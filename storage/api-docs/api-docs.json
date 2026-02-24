@@ -87,6 +87,55 @@
             }
         },
         "/api/v1/council": {
+            "get": {
+                "tags": [
+                    "Council"
+                ],
+                "summary": "Retorna informações dos conselhos",
+                "operationId": "7a4e39c5fa3ea47dfe06e31fafa73149",
+                "responses": {
+                    "200": {
+                        "description": "Informações dos conselhos retornadas com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "councils": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Conselho Exemplo"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Descrição do Conselho Exemplo"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
             "post": {
                 "tags": [
                     "Council"
@@ -126,6 +175,481 @@
                                                 "id": 1,
                                                 "name": "Conselho Exemplo",
                                                 "description": "Descrição do Conselho Exemplo"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                }
+            }
+        },
+        "/api/v1/expedition/{protocolId}": {
+            "get": {
+                "tags": [
+                    "Expedition"
+                ],
+                "summary": "Retorna informações das expedições através do protocolo",
+                "operationId": "075060c9d2730dff930470912935180b",
+                "responses": {
+                    "200": {
+                        "description": "Informações das expedições retornadas com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "expedition": {
+                                            "type": "object",
+                                            "example": {
+                                                "id": 1,
+                                                "name": "Expedição Exemplo",
+                                                "description": "Descrição da Expedição Exemplo"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Expedition"
+                ],
+                "summary": "Atualiza uma expedição existente",
+                "operationId": "754a788275048fd2c96af3b291fc9149",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "status_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Expedição atualizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "expedition": {
+                                            "type": "object",
+                                            "example": {
+                                                "id": 1,
+                                                "name": "Expedição Exemplo",
+                                                "start_date": "2023-01-01",
+                                                "artifacts": "Artefatos da Expedição",
+                                                "note": "Observações da Expedição",
+                                                "status": {
+                                                    "id": 1,
+                                                    "status": "APROVADA"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                }
+            }
+        },
+        "/api/v1/expedition": {
+            "post": {
+                "tags": [
+                    "Expedition"
+                ],
+                "summary": "Cria uma nova expedição",
+                "operationId": "4e2d83e4c82dc6a4a1d22107029b1562",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Expedição Exemplo"
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "example": "2023-01-01"
+                                    },
+                                    "artifacts": {
+                                        "type": "string",
+                                        "example": "Artefatos da Expedição"
+                                    },
+                                    "note": {
+                                        "type": "string",
+                                        "example": "Observações da Expedição"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Expedição criada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "expedition": {
+                                            "type": "object",
+                                            "example": {
+                                                "id": 1,
+                                                "name": "Expedição Exemplo",
+                                                "start_date": "2023-01-01",
+                                                "artifacts": "Artefatos da Expedição",
+                                                "note": "Observações da Expedição"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                }
+            }
+        },
+        "/api/v1/expedition-status": {
+            "get": {
+                "tags": [
+                    "Expedition Status"
+                ],
+                "summary": "Retorna informações dos status de expedições",
+                "operationId": "f0c7720d9142c87af3fc16fd8f0bd17e",
+                "responses": {
+                    "200": {
+                        "description": "Informações dos status de expedições retornadas com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "expedition_statuses": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Status Exemplo"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Descrição do Status Exemplo"
+                                                    },
+                                                    "slug": {
+                                                        "type": "string",
+                                                        "example": "status-exemplo"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Expedition Status"
+                ],
+                "summary": "Cria um novo status de expedição",
+                "operationId": "a8ead08be54321caef4d71c6c6190b75",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Status Exemplo"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Descrição do Status Exemplo"
+                                    },
+                                    "slug": {
+                                        "type": "string",
+                                        "example": "status-exemplo"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Status de expedição criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "expedition_status": {
+                                            "type": "object",
+                                            "example": {
+                                                "id": 1,
+                                                "name": "Status Exemplo",
+                                                "description": "Descrição do Status Exemplo",
+                                                "slug": "status-exemplo"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                }
+            }
+        },
+        "/api/v1/kingdom": {
+            "get": {
+                "tags": [
+                    "Kingdom"
+                ],
+                "summary": "Retorna informações dos reinos",
+                "operationId": "0544b6a2f78182d61a46aec212e4d8bc",
+                "responses": {
+                    "200": {
+                        "description": "Informações dos reinos retornadas com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "kingdoms": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Conselho Exemplo"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Descrição do Conselho Exemplo"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Kingdom"
+                ],
+                "summary": "Cria um novo reino",
+                "operationId": "2ad06522b8b45ea59326fad225ffc158",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Reino Exemplo"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Descrição do Reino Exemplo"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Reino criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "kingdom": {
+                                            "type": "object",
+                                            "example": {
+                                                "id": 1,
+                                                "name": "Reino Exemplo",
+                                                "description": "Descrição do Reino Exemplo"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                }
+            }
+        },
+        "/api/v1/role": {
+            "get": {
+                "tags": [
+                    "Role"
+                ],
+                "summary": "Retorna informações dos papéis",
+                "operationId": "4cebb0ba7da6403f5178d7221945b6cb",
+                "responses": {
+                    "200": {
+                        "description": "Informações dos papéis retornadas com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "roles": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Papel Exemplo"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Descrição do Papel Exemplo"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Role"
+                ],
+                "summary": "Cria um novo papel",
+                "operationId": "ebf680c8b7a8d46aeefccc7548183022",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Papel Exemplo"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Descrição do Papel Exemplo"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Papel criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "role": {
+                                            "type": "object",
+                                            "example": {
+                                                "id": 1,
+                                                "name": "Papel Exemplo",
+                                                "description": "Descrição do Papel Exemplo"
                                             }
                                         }
                                     },
@@ -259,6 +783,22 @@
         {
             "name": "Council",
             "description": "Council"
+        },
+        {
+            "name": "Expedition",
+            "description": "Expedition"
+        },
+        {
+            "name": "Expedition Status",
+            "description": "Expedition Status"
+        },
+        {
+            "name": "Kingdom",
+            "description": "Kingdom"
+        },
+        {
+            "name": "Role",
+            "description": "Role"
         },
         {
             "name": "User",

@@ -8,6 +8,7 @@ use App\Models\Kingdom;
 use App\Services\KingdomService;
 use App\Services\LogService;
 use OpenApi\Attributes as OA;
+use OpenApi\Attributes\Items as OAItems;
 
 class KingdomController extends Controller
 {
@@ -30,9 +31,14 @@ class KingdomController extends Controller
                         new OA\Property(
                             property: 'kingdoms',
                             type: 'array',
-                            example: [
-                                ['id' => 1, 'name' => 'Reino Exemplo', 'description' => 'Descrição do Reino Exemplo']
-                            ]
+                            items: new OAItems(
+                                type: 'object',
+                                properties: [
+                                    new OA\Property(property: 'id', type: 'integer', example: 1),
+                                    new OA\Property(property: 'name', type: 'string', example: 'Conselho Exemplo'),
+                                    new OA\Property(property: 'description', type: 'string', example: 'Descrição do Conselho Exemplo')
+                                ]
+                            )
                         )
                     ]
                 )

@@ -8,6 +8,7 @@ use App\Models\ExpeditionStatus;
 use App\Services\ExpeditionStatusService;
 use App\Services\LogService;
 use OpenApi\Attributes as OA;
+use OpenApi\Attributes\Items as OAItems;
 
 class ExpeditionStatusController extends Controller
 {
@@ -30,15 +31,15 @@ class ExpeditionStatusController extends Controller
                         new OA\Property(
                             property: 'expedition_statuses',
                             type: 'array',
-                            example: [
-                                [
-                                    'id' => 1,
-                                    'name' =>
-                                    'Status Exemplo',
-                                    'slug' => 'status-exemplo',
-                                    'description' => 'Descrição do Status Exemplo'
+                            items: new OAItems(
+                                type: 'object',
+                                properties: [
+                                    new OA\Property(property: 'id', type: 'integer', example: 1),
+                                    new OA\Property(property: 'name', type: 'string', example: 'Status Exemplo'),
+                                    new OA\Property(property: 'description', type: 'string', example: 'Descrição do Status Exemplo'),
+                                    new OA\Property(property: 'slug', type: 'string', example: 'status-exemplo')
                                 ]
-                            ]
+                            )
                         )
                     ]
                 )

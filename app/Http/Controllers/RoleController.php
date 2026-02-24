@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Services\LogService;
 use App\Services\RoleService;
 use OpenApi\Attributes as OA;
+use OpenApi\Attributes\Items as OAItems;
 
 class RoleController extends Controller
 {
@@ -30,9 +31,14 @@ class RoleController extends Controller
                         new OA\Property(
                             property: 'roles',
                             type: 'array',
-                            example: [
-                                ['id' => 1, 'name' => 'Papel Exemplo', 'description' => 'Descrição do Papel Exemplo']
-                            ]
+                            items: new OAItems(
+                                type: 'object',
+                                properties: [
+                                    new OA\Property(property: 'id', type: 'integer', example: 1),
+                                    new OA\Property(property: 'name', type: 'string', example: 'Papel Exemplo'),
+                                    new OA\Property(property: 'description', type: 'string', example: 'Descrição do Papel Exemplo')
+                                ]
+                            )
                         )
                     ]
                 )
