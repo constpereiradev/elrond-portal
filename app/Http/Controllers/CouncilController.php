@@ -9,6 +9,7 @@ use App\Services\CouncilService;
 use App\Services\LogService;
 use OpenApi\Attributes as OA;
 use OpenApi\Attributes\Items as OAItems;
+
 class CouncilController extends Controller
 {
     public function __construct(
@@ -17,34 +18,39 @@ class CouncilController extends Controller
     ) {}
 
     #[OA\Get(
-    path: '/api/v1/council',
-    summary: 'Retorna informações dos conselhos',
-    tags: ['Council'],
-    security: [['sanctum' => []]],
-    responses: [
-        new OA\Response(
-            response: 200,
-            description: 'Informações dos conselhos retornadas com sucesso',
-            content: new OA\JsonContent(
-                properties: [
-                    new OA\Property(
-                        property: 'councils',
-                        type: 'array',
-                        items: new OAItems(
-                            type: 'object',
-                            properties: [
-                                new OA\Property(property: 'id', type: 'integer', example: 1),
-                                new OA\Property(property: 'name', type: 'string', example: 'Conselho Exemplo'),
-                                new OA\Property(property: 'description', type: 'string', example: 'Descrição do Conselho Exemplo')
-                            ]
+        path: '/api/v1/council',
+        summary: 'Retorna informações dos conselhos',
+        tags: ['Council'],
+        security: [['sanctum' => []]],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Informações dos conselhos retornadas com sucesso',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'councils',
+                            type: 'array',
+                            items: new OAItems(
+                                type: 'object',
+                                properties: [
+                                    new OA\Property(property: 'id', type: 'integer', example: 1),
+                                    new OA\Property(property: 'name', type: 'string', example: 'Conselho Exemplo'),
+                                    new OA\Property(property: 'description', type: 'string', example: 'Descrição do Conselho Exemplo'),
+                                    new OA\Property(property: 'status', type: 'string', example: 'a'),
+                                    new OA\Property(property: 'created_at', type: 'string', example: '2023-01-01 00:00:00'),
+                                    new OA\Property(property: 'updated_at', type: 'string', example: '2023-01-01 00:00:00')
+
+
+                                ]
+                            )
                         )
-                    )
-                ]
-            )
-        ),
-        new OA\Response(response: 401, description: 'Não autenticado')
-    ]
-)]
+                    ]
+                )
+            ),
+            new OA\Response(response: 401, description: 'Não autenticado')
+        ]
+    )]
     public function index()
     {
         $councils = Council::all();

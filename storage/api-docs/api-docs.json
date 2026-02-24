@@ -115,6 +115,18 @@
                                                     "description": {
                                                         "type": "string",
                                                         "example": "Descrição do Conselho Exemplo"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "a"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2023-01-01 00:00:00"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2023-01-01 00:00:00"
                                                     }
                                                 },
                                                 "type": "object"
@@ -196,6 +208,18 @@
                 ],
                 "summary": "Retorna informações das expedições através do protocolo",
                 "operationId": "075060c9d2730dff930470912935180b",
+                "parameters": [
+                    {
+                        "name": "protocolId",
+                        "in": "path",
+                        "description": "ID do protocolo da expedição",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "1234"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Informações das expedições retornadas com sucesso",
@@ -233,6 +257,18 @@
                 ],
                 "summary": "Atualiza uma expedição existente",
                 "operationId": "754a788275048fd2c96af3b291fc9149",
+                "parameters": [
+                    {
+                        "name": "protocolId",
+                        "in": "path",
+                        "description": "ID do protocolo da expedição",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "1234"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -279,7 +315,12 @@
                     "401": {
                         "description": "Não autenticado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/v1/expedition": {
@@ -343,7 +384,12 @@
                     "401": {
                         "description": "Não autenticado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/v1/expedition-status": {

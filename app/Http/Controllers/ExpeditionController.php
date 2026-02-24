@@ -29,6 +29,18 @@ class ExpeditionController extends Controller
         summary: 'Retorna informações das expedições através do protocolo',
         tags: ['Expedition'],
         security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(
+                name: 'protocolId',
+                in: 'path',
+                description: 'ID do protocolo da expedição',
+                required: true,
+                schema: new OA\Schema(
+                    type: 'string',
+                    example: '1234'
+                )
+            )
+        ],
         responses: [
             new OA\Response(
                 response: 200,
@@ -71,6 +83,7 @@ class ExpeditionController extends Controller
         path: '/api/v1/expedition',
         summary: 'Cria uma nova expedição',
         tags: ['Expedition'],
+        security: [['sanctum' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(
@@ -139,10 +152,23 @@ class ExpeditionController extends Controller
         }
     }
 
-        #[OA\Put(
+    #[OA\Put(
         path: '/api/v1/expedition/{protocolId}',
         summary: 'Atualiza uma expedição existente',
         tags: ['Expedition'],
+        security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(
+                name: 'protocolId',
+                in: 'path',
+                description: 'ID do protocolo da expedição',
+                required: true,
+                schema: new OA\Schema(
+                    type: 'string',
+                    example: '1234'
+                )
+            )
+        ],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(
