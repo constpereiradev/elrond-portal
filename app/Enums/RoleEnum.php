@@ -7,4 +7,5 @@ enum RoleEnum: string
     case admin = 'ADMIN';
     case reino = 'REINO';
     case conselho = 'CONSELHO';
+    case membro = 'MEMBRO';
 }
