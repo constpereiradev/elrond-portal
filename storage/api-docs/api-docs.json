@@ -25,11 +25,11 @@
                                 "properties": {
                                     "email": {
                                         "type": "string",
-                                        "example": "user@example.com"
+                                        "example": "admin@gmail.com"
                                     },
                                     "password": {
                                         "type": "string",
-                                        "example": "password123"
+                                        "example": "1234"
                                     }
                                 },
                                 "type": "object"
@@ -62,6 +62,28 @@
                         "description": "Não autenticado"
                     }
                 }
+            }
+        },
+        "/api/v1/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout do usuário",
+                "operationId": "c4eddaf1a2e990cc90e4326c0d731d41",
+                "responses": {
+                    "200": {
+                        "description": "Logout realizado com sucesso"
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/v1/auth/user": {
@@ -109,6 +131,30 @@
                 ],
                 "summary": "Cria um novo usuário",
                 "operationId": "556546cc7cc8516e3156817127e398f7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Usuário criado com sucesso",
@@ -141,16 +187,6 @@
             }
         }
     },
-    "tags": [
-        {
-            "name": "Auth",
-            "description": "Auth"
-        },
-        {
-            "name": "User",
-            "description": "User"
-        }
-    ],
     "components": {
         "securitySchemes": {
             "sanctum": {
@@ -160,5 +196,15 @@
                 "in": "header"
             }
         }
-    }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "User",
+            "description": "User"
+        }
+    ]
 }
