@@ -8,7 +8,7 @@ Este repositório contém a API do Portal Elrond, desenvolvida para o teste téc
 
    * PHP 8.x ou superior
    * Composer
-   * Laravel 8.x ou superior
+   * Laravel 11.x ou superior
    * Banco de dados MySQL
 
 2. **Passos para Iniciar**:
