@@ -2,14 +2,23 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\Interface\ExceptionInterface;
 use Exception;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class ExpeditionException extends Exception
+class ExpeditionException extends Exception implements ExceptionInterface
 {
     public function __construct(string $message, int $code = Response::HTTP_UNAUTHORIZED)
     {
         parent::__construct($message, $code);
+    }
+
+    public function render($request): JsonResponse
+    {
+        return response()->json([
+            'message' => $this->getMessage()
+        ], $this->getCode() ?: 403);
     }
 
     public static function notFound(?string $message = null): self
