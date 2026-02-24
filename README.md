@@ -15,7 +15,7 @@ Este repositório contém a API do Portal Elrond, desenvolvida para o teste téc
    * PHP 8.x ou superior
    * Composer
    * Laravel 8.x ou superior
-   * Banco de dados (MySQL, SQLite, etc.)
+   * Banco de dados MySQL
 
 2. **Passos para Iniciar**:
 
@@ -38,6 +38,12 @@ Este repositório contém a API do Portal Elrond, desenvolvida para o teste téc
 
      ```bash
      php artisan migrate --seed
+     ```
+
+     * Instale o reverb para publicar suas configurações
+
+     ```bash
+     php artisan reverb:install
      ```
 
 3. **Inicializar a Fila e Reverb**:
