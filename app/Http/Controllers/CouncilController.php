@@ -60,6 +60,7 @@ class CouncilController extends Controller
     #[OA\Post(
         path: '/api/v1/council',
         summary: 'Cria um novo conselho',
+        security: [['sanctum' => []]],
         tags: ['Council'],
         requestBody: new OA\RequestBody(
             required: true,

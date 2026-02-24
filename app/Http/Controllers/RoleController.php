@@ -56,6 +56,7 @@ class RoleController extends Controller
         path: '/api/v1/role',
         summary: 'Cria um novo papel',
         tags: ['Role'],
+        security: [['sanctum' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(
@@ -104,7 +105,6 @@ class RoleController extends Controller
         try {
             $role = $this->roleService->store($request);
             return $this->success(['role' => $role]);
-
         } catch (\Exception $e) {
             $this->logService->logError('Failed to create role', ['error' => $e->getMessage()]);
 

@@ -57,6 +57,7 @@ class ExpeditionStatusController extends Controller
         path: '/api/v1/expedition-status',
         summary: 'Cria um novo status de expedição',
         tags: ['Expedition Status'],
+        security: [['sanctum' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(

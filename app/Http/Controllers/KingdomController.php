@@ -56,6 +56,7 @@ class KingdomController extends Controller
         path: '/api/v1/kingdom',
         summary: 'Cria um novo reino',
         tags: ['Kingdom'],
+        security: [['sanctum' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(
