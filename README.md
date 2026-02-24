@@ -2,9 +2,8 @@
 
 Este repositório contém a API do Portal Elrond, desenvolvida para o teste técnico da WebMania. A API oferece funcionalidades para gerenciar usuários, papéis, conselhos, reinos e expedições, com diferentes níveis de acesso e autorização.
 
-## **Requisitos**
 
-### 🐳 Setup com Docker (Laravel Sail)
+### Setup com Docker (Laravel Sail)
 Se você utiliza Docker, pode subir o ambiente completo sem configurar nada localmente:
 
 * Copie o arquivo de exemplo: cp .env.example .env
@@ -17,6 +16,9 @@ Se você utiliza Docker, pode subir o ambiente completo sem configurar nada loca
 
 * Inicie o Reverb dentro do container:
   * ./vendor/bin/sail artisan reverb:start
+---
+
+### Setup local
 
 1. **Tecnologias Necessárias**:
 
