@@ -71,7 +71,7 @@ Este repositório contém a API do Portal Elrond, desenvolvida para o teste téc
 
 5. **WebSocket**:
     * Para se conectar ao WebSocket, basta utilizar a chave REVERB_APP_KEY gerada na instalação do reverb e passar na url: 
-    
+
     ```bash
     ws://elrond-portal.test:8080/app/zoz8grzqo6vqxflddpba.
     ```
@@ -86,6 +86,10 @@ Este repositório contém a API do Portal Elrond, desenvolvida para o teste téc
     }
     ```
     Onde .1 é o ID da expedição.  
+
+    Os eventos são disparados quando:
+    - As expedições são visualizadas;
+    - O status de uma expedição é modificado;
 
 
 ## **Como Utilizar os Endpoints**
