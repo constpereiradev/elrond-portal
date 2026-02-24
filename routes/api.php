@@ -7,7 +7,6 @@ use App\Http\Controllers\ExpeditionStatusController;
 use App\Http\Controllers\KingdomController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // --- Rotas Públicas ---
