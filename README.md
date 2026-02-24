@@ -1,9 +1,3 @@
-Entendido! Vou adicionar as informações necessárias sobre a **inicialização da fila (queue)** e do **reverb** no README. Isso é essencial para garantir que o usuário saiba como configurar o ambiente corretamente para que as funcionalidades da API funcionem sem problemas.
-
-Aqui está a versão atualizada do **README**, agora incluindo esses passos:
-
----
-
 # **Teste Técnico - Portal Elrond**
 
 Este repositório contém a API do Portal Elrond, desenvolvida para o teste técnico da WebMania. A API oferece funcionalidades para gerenciar usuários, papéis, conselhos, reinos e expedições, com diferentes níveis de acesso e autorização.
