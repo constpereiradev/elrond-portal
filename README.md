@@ -174,9 +174,9 @@ Acesse esta documentação no Postman aqui: [Elrond Portal Api Documentation - P
 
 ## **Documentação - Swagger**
 Esta API está documentada com Swagger. Para gerar, rode o comando abaixo:
-    ```bash
+  ```bash
     php artisan l5-swagger:generate
-    ```
+  ```
 A documentação estará disponível em: [Elrond Portal Api Documentation - Swagger](https://elrond-portal.test/api/documentation)
 ---
 
@@ -188,7 +188,7 @@ A documentação estará disponível em: [Elrond Portal Api Documentation - Swag
 
   ```bash
     php vendor/bin/phpstan anylise
-    ```
+  ```
 
 ## **Suporte**
 
