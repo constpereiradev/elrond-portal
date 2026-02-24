@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\RoleEnum;
+use App\Models\Role;
 use App\Models\User;
 
 class UserPolicy
@@ -12,6 +13,7 @@ class UserPolicy
      */
     public function storeAdmin(User $user): bool
     {
-        return strtoupper($user->role->slug) == RoleEnum::admin;
+        $role = Role::find($user->role_id);
+        return strtoupper($role->slug) == RoleEnum::admin->value;
     }
 }

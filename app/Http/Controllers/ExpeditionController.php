@@ -221,7 +221,8 @@ class ExpeditionController extends Controller
 
         $request = $updateExpeditionRequest->validated();
         $expedition = $this->expeditionService->getByProtocol($protocolId);
-
+        $updatedExpedition = [];
+        
         if (!empty($request['status_id'])) {
 
             $updatedExpedition = DB::transaction(function () use ($expedition, $request, $updateExpeditionRequest) {

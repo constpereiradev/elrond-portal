@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Enums\RoleEnum;
+use App\Models\Role;
 
 class KingdomPolicy
 {   
@@ -14,6 +15,7 @@ class KingdomPolicy
      */
     public function store(User $user): bool
     {
-        return $user->role->slug == RoleEnum::admin->value;
+        $role = Role::find($user->role_id);
+        return $role?->slug == RoleEnum::admin->value;
     }
 }

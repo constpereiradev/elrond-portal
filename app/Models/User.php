@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Role;
+use App\Models\Council;
+use App\Models\Kingdom;
 
 #[UsePolicy(UserPolicy::class)]
 class User extends Authenticatable
@@ -71,13 +74,15 @@ class User extends Authenticatable
         return $this->belongsTo(Kingdom::class);
     }
 
-    public function type(): string|null
+    public function type(): ?string
     {
-        return $this->role?->slug;
+        $role = Role::find($this->role_id);
+        return $role?->slug;
     }
 
     public function isActive(): bool
     {
-        return $this->role?->status == 'a';
+        $role = Role::find($this->role_id);
+        return $role?->status === 'a';
     }
 }

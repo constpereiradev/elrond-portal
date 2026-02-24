@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Council;
 use App\Models\User;
 use App\Enums\RoleEnum;
+use App\Models\Role;
 
 class CouncilPolicy
 {
@@ -13,6 +14,7 @@ class CouncilPolicy
      */
     public function store(User $user): bool
     {
-        return strtoupper($user->role->slug) === RoleEnum::admin->value;
+        $role = Role::find($user->role_id);
+        return strtoupper($role->slug) === RoleEnum::admin->value;
     }
 }
