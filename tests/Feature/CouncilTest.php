@@ -29,8 +29,7 @@ class CouncilTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function non_admin_cannot_create_council()
+    public function test_non_admin_cannot_create_council()
     {
         /** @var User $commonUser */
         $commonUser = User::factory()->create([
@@ -45,8 +44,7 @@ class CouncilTest extends TestCase
             ->postJson('api/v1/council', $payload)->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
-    /** @test */
-    public function admin_can_create_council()
+    public function test_admin_can_create_council()
     {
         /** @var User $commonUser */
         $commonUser = User::factory()->create([

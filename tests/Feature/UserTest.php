@@ -36,8 +36,7 @@ class UserTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function the_logged_user_can_be_returned()
+    public function test_the_logged_user_can_be_returned()
     {
         /** @var User $commonUser */
         $commonUser = User::factory()->create([
@@ -48,8 +47,7 @@ class UserTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
     }
 
-    /** @test */
-    public function a_non_admin_cannot_create_an_admin_user()
+    public function test_a_non_admin_cannot_create_an_admin_user()
     {
         /** @var User $commonUser */
         $commonUser = User::factory()->create(
@@ -72,8 +70,7 @@ class UserTest extends TestCase
         $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
-    /** @test */
-    public function a_user_can_be_registered()
+    public function test_a_user_can_be_registered()
     {
         /** @var User $commonUser */
         $commonUser = User::factory()->create([
@@ -93,8 +90,7 @@ class UserTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
     }
 
-    /** @test */
-    public function cannot_send_council_and_kingom_data_simultaneously()
+    public function test_cannot_send_council_and_kingom_data_simultaneously()
     {
         /** @var User $commonUser */
         $commonUser = User::factory()->create([
@@ -115,8 +111,7 @@ class UserTest extends TestCase
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    /** @test */
-    public function cannot_have_missing_fields_on_user_register()
+    public function test_cannot_have_missing_fields_on_user_register()
     {
         $payload = [
             'name' => 'Amanda Pereira',

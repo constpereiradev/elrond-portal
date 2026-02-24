@@ -26,8 +26,7 @@ class AuthTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function cannot_auth_with_missing_credentials()
+    public function test_cannot_auth_with_missing_credentials()
     {
         $payload = [
             'email' => 'admin@gmail.com',
@@ -38,8 +37,7 @@ class AuthTest extends TestCase
         $response->assertStatus(Response::HTTP_FOUND);
     }
 
-    /** @test */
-    public function cannot_login_an_inactive_user_role()
+    public function test_cannot_login_an_inactive_user_role()
     {
         /** @var User $commomUser */
         $commomUser = User::factory()->create([
@@ -59,8 +57,7 @@ class AuthTest extends TestCase
         $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
-    /** @test */
-    public function cannot_logout_a_user_that_does_not_exist()
+    public function test_cannot_logout_a_user_that_does_not_exist()
     {
         $response = $this->postJson('api/v1/logout', []);
         $response->assertStatus(Response::HTTP_UNAUTHORIZED);
