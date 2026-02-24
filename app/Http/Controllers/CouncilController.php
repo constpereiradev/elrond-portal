@@ -7,7 +7,7 @@ use App\Http\Requests\StoreCouncilRequest;
 use App\Models\Council;
 use App\Services\CouncilService;
 use App\Services\LogService;
-use Illuminate\Http\Request;
+use OpenApi\Attributes as OA;
 
 class CouncilController extends Controller
 {
@@ -16,12 +16,81 @@ class CouncilController extends Controller
         private readonly LogService $logService
     ) {}
 
+        #[OA\Get(
+        path: '/api/v1/council',
+        summary: 'Retorna informações dos conselhos',
+        tags: ['Council'],
+        security: [['sanctum' => []]],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Informações dos conselhos retornadas com sucesso',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'councils',
+                            type: 'array',
+                            example: [
+                                ['id' => 1, 'name' => 'Conselho Exemplo', 'description' => 'Descrição do Conselho Exemplo']
+                            ]
+                        )
+                    ]
+                )
+            ),
+            new OA\Response(response: 401, description: 'Não autenticado')
+        ]
+    )]
     public function index()
     {
         $councils = Council::all();
         return $this->success(['councils' => $councils]);
     }
 
+    #[OA\Post(
+        path: '/api/v1/council',
+        summary: 'Cria um novo conselho',
+        tags: ['Council'],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\MediaType(
+                mediaType: 'application/json',
+                schema: new OA\Schema(
+                    type: 'object',
+                    properties: [
+                        new OA\Property(property: 'name', type: 'string', example: 'Conselho Exemplo'),
+                        new OA\Property(property: 'description', type: 'string', example: 'Descrição do Conselho Exemplo'),
+                    ]
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Conselho criado com sucesso',
+                content: new OA\MediaType(
+                    mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        type: 'object',
+                        properties: [
+                            new OA\Property(
+                                property: 'council',
+                                type: 'object',
+                                example: [
+                                    'id' => 1,
+                                    'name' => 'Conselho Exemplo',
+                                    'description' => 'Descrição do Conselho Exemplo',
+                                ]
+                            )
+                        ]
+                    )
+                )
+            ),
+            new OA\Response(
+                response: 401,
+                description: 'Não autenticado'
+            )
+        ]
+    )]
     public function store(StoreCouncilRequest $request)
     {
         $this->councilService->validatePermission('store', $request->user(), Council::class);

@@ -86,6 +86,60 @@
                 ]
             }
         },
+        "/api/v1/council": {
+            "post": {
+                "tags": [
+                    "Council"
+                ],
+                "summary": "Cria um novo conselho",
+                "operationId": "3be6e5f0f5b0e9698b9f47e84c67bde0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Conselho Exemplo"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Descrição do Conselho Exemplo"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Conselho criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "council": {
+                                            "type": "object",
+                                            "example": {
+                                                "id": 1,
+                                                "name": "Conselho Exemplo",
+                                                "description": "Descrição do Conselho Exemplo"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                }
+            }
+        },
         "/api/v1/auth/user": {
             "get": {
                 "tags": [
@@ -201,6 +255,10 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Council",
+            "description": "Council"
         },
         {
             "name": "User",
