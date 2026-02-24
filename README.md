@@ -177,8 +177,7 @@ Esta API está documentada com Swagger. Para gerar, rode o comando abaixo:
     ```bash
     php artisan l5-swagger:generate
     ```
-
-  A documentação estará disponível em: [Elrond Portal Api Documentation - Swagger](https://elrond-portal.test/api/documentation)
+A documentação estará disponível em: [Elrond Portal Api Documentation - Swagger](https://elrond-portal.test/api/documentation)
 ---
 
 ## **PHPStan**
