@@ -39,7 +39,7 @@ class AuthService
     {
         $token = $user->currentAccessToken();
 
-        if (!$token instanceof PersonalAccessToken) {
+        if (!$token || !$token instanceof PersonalAccessToken) {
             throw AuthException::invalidToken();
         }
 
