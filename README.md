@@ -91,6 +91,12 @@ Este repositório contém a API do Portal Elrond, desenvolvida para o teste téc
     - As expedições são visualizadas;
     - O status de uma expedição é modificado;
 
+6. **Testes**:
+    * Esta API possui testes de feature. Para rodá-los, rode o comando abaixo:
+
+    ```bash
+    php artisan test
+    ```
 
 ## **Como Utilizar os Endpoints**
 
