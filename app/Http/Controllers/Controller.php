@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use OpenApi\Attributes as OA;
 
+#[OA\Info(title: "Elrond Portal API", version: "1.0.0")]
+#[OA\Server(url: "https://elrond-portal.test")]
 abstract class Controller
 {
     public function success(?array $params = [], ?string $message = "Sucess",): JsonResponse
