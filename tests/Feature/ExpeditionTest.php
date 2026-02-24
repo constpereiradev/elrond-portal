@@ -80,18 +80,19 @@ class ExpeditionTest extends TestCase
     {
         /** @var User $commonUser */
         $commonUser = User::factory()->create([
-            'role_id' => Role::where('slug', RoleEnum::reino    ->value)->first()->id,
+            'role_id' => Role::where('slug', RoleEnum::reino->value)->first()->id,
+            'kingdom_id' => Kingdom::first()->id,
         ]);
 
         $payload = [
             'start_date' => now()->addDays(1)->format('Y-m-d'),
-            'kingdom_id' => Kingdom::first()->id,
+            'kingdom_id' => $commonUser->kingdom_id,
         ];
 
         $this
             ->actingAs($commonUser)
             ->postJson('/api/v1/expedition', $payload)
-            ->assertStatus(Response::HTTP_FORBIDDEN);
+            ->assertStatus(Response::HTTP_OK);
     }
 
     public function test_non_council_cannot_update_expedition()
