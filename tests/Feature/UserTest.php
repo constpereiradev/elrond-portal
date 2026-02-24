@@ -20,6 +20,19 @@ class UserTest extends TestCase
         Role::create(['slug' => RoleEnum::admin->value, 'name' => 'Admin']);
         Role::create(['slug' => RoleEnum::reino->value, 'name' => 'Reino']);
         Role::create(['slug' => RoleEnum::conselho->value, 'name' => 'Conselho']);
+        Role::create(['slug' => RoleEnum::membro->value, 'name' => 'Membro']);
+    }
+
+    /** @test */
+    public function the_logged_user_can_be_returned()
+    {
+        /** @var User $commonUser */
+        $commonUser = User::factory()->create([
+            'role_id' => Role::where('slug', RoleEnum::membro->value)->first()->id
+        ]);
+
+        $response = $this->actingAs($commonUser)->get('api/v1/auth/user');
+        $response->assertStatus(200);
     }
 
     /** @test */
@@ -28,11 +41,11 @@ class UserTest extends TestCase
         /** @var User $commonUser */
         $commonUser = User::factory()->create(
             [
-                'role_id' => Role::where('slug', RoleEnum::reino)->first()->id
+                'role_id' => Role::where('slug', RoleEnum::reino->value)->first()->id
             ]
         );
 
-        $adminRole = Role::where('slug', RoleEnum::admin)->first();
+        $adminRole = Role::where('slug', RoleEnum::admin->value)->first();
 
         $payload = [
             'name' => 'Amanda Pereira',
