@@ -2,13 +2,14 @@
 
 namespace App\Services\Abstract;
 
+use Illuminate\Auth\Access\AuthorizationException;
 
 abstract class BaseService
 {
     public function validatePermission(string $action, $user, $model): void
     {
         if (!$user->can($action, $model)) {
-            abort(403, 'Unauthorized action.');
+            throw new AuthorizationException('Unauthorized action.');
         }
     }
 }

@@ -29,6 +29,11 @@ class RoleSeeder extends Seeder
                 'slug' => 'CONSELHO',
                 'status' => 'a'
             ],
+            [
+                'name' => 'Membro',
+                'slug' => 'MEMBRO',
+                'status' => 'a'
+            ],
         ]);
     }
 }
