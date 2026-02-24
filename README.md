@@ -54,7 +54,7 @@ Este repositório contém a API do Portal Elrond, desenvolvida para o teste téc
      Para iniciar o **reverb**, execute o seguinte comando:
 
      ```bash
-     php artisan reverb:start --hostname="elrond-portal.test"
+     php artisan reverb:start --hostname="SEU_HOST"
      ```
 
    **Observação**: Caso esteja usando um driver de fila como o `database` ou `redis`, certifique-se de ter configurado corretamente o `.env` para que o Laravel consiga processar as filas corretamente.
@@ -67,7 +67,7 @@ Este repositório contém a API do Portal Elrond, desenvolvida para o teste téc
     * Para se conectar ao WebSocket, basta utilizar a chave REVERB_APP_KEY gerada na instalação do reverb e passar na url: 
 
     ```bash
-    ws://elrond-portal.test:8080/app/{REVERB_APP_KEY}.
+    ws://SEU_HOST:8080/app/{REVERB_APP_KEY}.
     ```
 
     Para ver eventos de uma expedição, envie a seguinte mensagem:  
@@ -177,7 +177,7 @@ Esta API está documentada com Swagger. Para gerar, rode o comando abaixo:
 ```bash
   php artisan l5-swagger:generate
 ```
-A documentação estará disponível em [Elrond Portal Api Documentation - Swagger](https://elrond-portal.test/api/documentation).
+A documentação estará disponível em [Elrond Portal Api Documentation - Swagger](https://SEU_HOST/api/documentation).
 
 ---
 
