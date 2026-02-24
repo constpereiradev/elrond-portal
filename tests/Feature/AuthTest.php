@@ -41,9 +41,6 @@ class AuthTest extends TestCase
     /** @test */
     public function cannot_login_an_inactive_user_role()
     {
-        $this->withoutExceptionHandling();
-
-
         /** @var User $commomUser */
         $commomUser = User::factory()->create([
             'role_id' => Role::where('slug', RoleEnum::conselho->value)
@@ -60,5 +57,12 @@ class AuthTest extends TestCase
         $response = $this->postJson('api/v1/auth', $payload);
 
         $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    /** @test */
+    public function cannot_logout_a_user_that_does_not_exist()
+    {
+        $response = $this->postJson('api/v1/logout', []);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 }

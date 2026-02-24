@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\AuthException;
+use App\Exceptions\UserException;
 use App\Http\Requests\AuthenticateRequest;
 use App\Services\AuthService;
 use App\Services\LogService;
@@ -34,6 +35,14 @@ class AuthController extends Controller
                 'token_type' => 'Bearer',
                 'type' => $user->type(),
             ]);
+        } catch (AuthException $e) {
+            $this->logService->logError('Auth failed: ' . $e->getMessage(), ['exception' => $e]);
+
+            throw $e;
+        } catch (UserException $e) {
+            $this->logService->logError('Auth failed: ' . $e->getMessage(), ['exception' => $e]);
+
+            throw $e;
         } catch (\Exception $e) {
             $this->logService->logError('Auth failed: ' . $e->getMessage(), ['exception' => $e]);
 
@@ -51,7 +60,7 @@ class AuthController extends Controller
             if ($this->authService->logout($request->user())) {
                 return $this->success([]);
             }
-            
+
             throw AuthException::logoutFailed();
         } catch (\Exception $e) {
             $this->logService->logError('Logout failed: ' . $e->getMessage(), ['exception' => $e]);
