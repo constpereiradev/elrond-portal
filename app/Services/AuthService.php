@@ -37,13 +37,18 @@ class AuthService
 
     public function logout($user): bool
     {
-        $token = $user->currentAccessToken();
-
-        if (!$token || !$token instanceof PersonalAccessToken) {
+        if (!$user) {
             throw AuthException::invalidToken();
         }
 
-        $token->delete();
-        return true;
+        $token = $user->currentAccessToken();
+
+        if ($token && method_exists($token, 'delete')) {
+            return $token->delete();
+        }
+
+        // Se não houver token mas o usuário possui sessão (Caso de Web)
+        // deleta todos os tokens dele
+        return $user->tokens()->delete();
     }
 }
