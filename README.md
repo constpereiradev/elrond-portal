@@ -4,6 +4,20 @@ Este repositório contém a API do Portal Elrond, desenvolvida para o teste téc
 
 ## **Requisitos**
 
+### 🐳 Setup com Docker (Laravel Sail)
+Se você utiliza Docker, pode subir o ambiente completo sem configurar nada localmente:
+
+* Copie o arquivo de exemplo: cp .env.example .env
+* Suba os containers: ./vendor/bin/sail up -d
+* Instale as dependências: ./vendor/bin/sail composer install
+
+* Gere a chave e migre o banco:
+  * ./vendor/bin/sail artisan key:generate
+  * ./vendor/bin/sail artisan migrate --seed
+
+* Inicie o Reverb dentro do container:
+  * ./vendor/bin/sail artisan reverb:start
+
 1. **Tecnologias Necessárias**:
 
    * PHP 8.x ou superior
