@@ -23,8 +23,8 @@ class StoreExpeditionRequest extends FormRequest
     {
         return [
             'start_date' => 'required|date',
-            'artifacts' => 'text',
-            'note' => 'text',
+            'artifacts' => 'string|max:255',
+            'note' => 'string|max:1000',
         ];
     }
 }

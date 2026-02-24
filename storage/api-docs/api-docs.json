@@ -198,7 +198,12 @@
                     "401": {
                         "description": "Não autenticado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/v1/expedition/{protocolId}": {
@@ -501,7 +506,12 @@
                     "401": {
                         "description": "Não autenticado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/v1/kingdom": {
@@ -604,7 +614,12 @@
                     "401": {
                         "description": "Não autenticado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/v1/role": {
@@ -707,7 +722,12 @@
                     "401": {
                         "description": "Não autenticado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/v1/auth/user": {
