@@ -69,6 +69,25 @@ Este repositório contém a API do Portal Elrond, desenvolvida para o teste téc
 
    * A API usa autenticação via **token JWT**. Para autenticar um usuário, basta acessar o endpoint `/auth` e obter o token, que será utilizado em todas as requisições subsequentes.
 
+5. **WebSocket**:
+    * Para se conectar ao WebSocket, basta utilizar a chave REVERB_APP_KEY gerada na instalação do reverb e passar na url: 
+    
+    ```bash
+    ws://elrond-portal.test:8080/app/zoz8grzqo6vqxflddpba.
+    ```
+
+    Para ver eventos de uma expedição, envie a seguinte mensagem:  
+     ```bash
+    {
+        "event":"pusher:subscribe",
+        "data":{
+            "channel":"expedition.1"
+        }
+    }
+    ```
+    Onde .1 é o ID da expedição.  
+
+
 ## **Como Utilizar os Endpoints**
 
 ### **Autenticação e Token**
