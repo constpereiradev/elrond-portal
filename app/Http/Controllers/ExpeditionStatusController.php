@@ -32,6 +32,7 @@ class ExpeditionStatusController extends Controller
 
             return $this->success(['expedition_status' => $status]);
         } catch (\Exception $e) {
+            dd($e);
             $this->logService->logError('Failed to create expedition status', ['error' => $e->getMessage()]);
             throw ExpeditionStatusException::registerFailed();
         }

@@ -13,6 +13,6 @@ class CouncilPolicy
      */
     public function store(User $user): bool
     {
-        return strtoupper($user->role->slug) == RoleEnum::admin;
+        return strtoupper($user->role->slug) === RoleEnum::admin->value;
     }
 }

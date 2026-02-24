@@ -7,6 +7,7 @@ use App\Events\ExpeditionStatusChanged;
 use App\Events\ExpeditionViewed;
 use App\Exceptions\ExpeditionException;
 use App\Http\Requests\StoreExpeditionRequest;
+use App\Http\Requests\UpdateExpeditionRequest;
 use App\Models\Expedition;
 use App\Services\ExpeditionService;
 use App\Services\LogService;
@@ -39,15 +40,14 @@ class ExpeditionController extends Controller
         }
     }
 
-    public function store(StoreExpeditionRequest $request)
+    public function store(StoreExpeditionRequest $storeExpeditionRequest)
     {
-        $this->expeditionService->validatePermission('store', $request->user(), Expedition::class);
-        $request->merge([
-            'kingdom_id' => $request->user()->kingdom_id,
-        ]);
+        $this->expeditionService->validatePermission('store', $storeExpeditionRequest->user(), Expedition::class);
 
         try {
-            $request = $request->validated();
+            $request = $storeExpeditionRequest->validated();
+            $request['kingdom_id'] = $storeExpeditionRequest->user()->kingdom_id;
+
             $protocol = DB::transaction(function () use ($request) {
 
                 $expedition = $this->expeditionService->registerExpedition($request);
@@ -62,16 +62,16 @@ class ExpeditionController extends Controller
         }
     }
 
-    public function update(string $protocolId, Request $request)
+    public function update(string $protocolId, UpdateExpeditionRequest $updateExpeditionRequest)
     {
-        $request = $request->validated();
+        $this->expeditionService->validatePermission('updateStatus', $updateExpeditionRequest->user(), Expedition::class);
+
+        $request = $updateExpeditionRequest->validated();
         $expedition = $this->expeditionService->getByProtocol($protocolId);
 
-        if (!empty($request->status_id)) {
+        if (!empty($request['status_id'])) {
 
-            $expedition = DB::transaction(function () use ($expedition, $request) {
-
-                $this->expeditionService->validatePermission('updateStatus', $request->user(), Expedition::class);
+            $updatedExpedition = DB::transaction(function () use ($expedition, $request, $updateExpeditionRequest) {
 
                 if (in_array($expedition->status->slug, [
                     ExpeditionStatusEnum::rejeitada->value,
@@ -81,19 +81,19 @@ class ExpeditionController extends Controller
                     throw ExpeditionException::expeditionUpdatedAlready("Expedição já foi atualizada pelo Conselho para o status {$expedition->status->slug}.");
                 }
 
-                $this->expeditionService->validateStatusUpdate((int) $request->status_id, $request);
+                $this->expeditionService->validateStatusUpdate((int) $request['status_id'], $updateExpeditionRequest);
 
                 $expedition->update([
-                    'user_id' => $request->user()->id,
-                    'status_id' => $request->status_id,
-                    'rejection_reason' => $request->rejection_reason ?? null
+                    'user_id' => $updateExpeditionRequest->user()->id,
+                    'status_id' => $updateExpeditionRequest->status_id,
+                    'rejection_reason' => $updateExpeditionRequest->rejection_reason ?? null
                 ]);
 
-                return $expedition;
+                return $expedition->fresh();
             });
 
-            broadcast(new ExpeditionStatusChanged($expedition));//->toOthers();
+            broadcast(new ExpeditionStatusChanged($updatedExpedition));//->toOthers();
         }
-        return $this->success(['expedition' => $expedition]);
+        return $this->success(['expedition' => $updatedExpedition]);
     }
 }

@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 #[UsePolicy(CouncilPolicy::class)]
 class Council extends Model
 {   
-
     protected $fillable = [
         'name',
         'description',

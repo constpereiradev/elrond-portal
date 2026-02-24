@@ -31,7 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::controller(RoleController::class)->prefix('role')->group(function () {
-        Route::get('/', 'get');
+        Route::get('/', 'index');
         Route::post('/', 'store');
     });
 

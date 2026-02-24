@@ -27,10 +27,7 @@ class KingdomController extends Controller
         $request = $request->validated();
 
         try {
-            $kingdom = Kingdom::create([
-                'name' => $request->name,
-                'description' => $request->description ?? null
-            ]);
+            $kingdom = $this->kingdomService->store($request);
 
             return $this->success(['Kingdom' => $kingdom]);
         } catch (\Exception $e) {
