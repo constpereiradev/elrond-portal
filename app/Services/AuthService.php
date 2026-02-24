@@ -8,7 +8,7 @@ use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthService
 {
-    public function AuthenticateAndGenerateToken(array $credentials): string
+    public function authenticateAndGenerateToken(array $credentials): string
     {
         if (!$this->authenticate($credentials)) {
             throw AuthException::invalidCredentials();
