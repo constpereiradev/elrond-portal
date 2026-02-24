@@ -174,21 +174,22 @@ Acesse esta documentação no Postman aqui: [Elrond Portal Api Documentation - P
 
 ## **Documentação - Swagger**
 Esta API está documentada com Swagger. Para gerar, rode o comando abaixo:
-  ```bash
-    php artisan l5-swagger:generate
-  ```
-A documentação estará disponível em: [Elrond Portal Api Documentation - Swagger](https://elrond-portal.test/api/documentation)
+```bash
+  php artisan l5-swagger:generate
+```
+A documentação estará disponível em [Elrond Portal Api Documentation - Swagger](https://elrond-portal.test/api/documentation).
+
 ---
 
 ## **PHPStan**
-  O PHPStan é responsável por encontrar bugs no código sem escrever testes. Ele escaneia todo o código procurando por problemas.
+O PHPStan é responsável por encontrar bugs no código sem escrever testes. Ele escaneia todo o código procurando por problemas.
 
-  Nesta API, ele está configurado como nível 5 (modifique em phpstan.neon)
-  Para executá-lo, rode o comando abaixo:
+Nesta API, ele está configurado como nível 5 (modifique em phpstan.neon)
+Para executá-lo, rode o comando abaixo:
 
-  ```bash
-    php vendor/bin/phpstan anylise
-  ```
+```bash
+  php vendor/bin/phpstan anylise
+```
 
 ## **Suporte**
 
