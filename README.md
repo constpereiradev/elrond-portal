@@ -2,7 +2,7 @@
 
 Este repositório contém a API do Portal Elrond, desenvolvida para o teste técnico da WebMania. A API oferece funcionalidades para gerenciar usuários, papéis, conselhos, reinos e expedições, com diferentes níveis de acesso e autorização.
 
-
+---
 ### Setup com Docker (Laravel Sail)
 Se você utiliza Docker, pode subir o ambiente completo sem configurar nada localmente:
 
